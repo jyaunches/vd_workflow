@@ -41,19 +41,15 @@ First, verify all prerequisites are met:
 
 ```bash
 # Check beads is initialized
-ls -la .beads/
+ls -la .beads/ 2>/dev/null || echo "BEADS_NOT_INITIALIZED"
 ```
 
 ```bash
-# Check PATTERNS.md exists
-ls -la .claude/PATTERNS.md
+# Check PATTERNS.md exists (optional - used for pattern enforcement)
+ls -la .claude/PATTERNS.md 2>/dev/null || echo "PATTERNS_NOT_FOUND"
 ```
 
-```bash
-# Check both agents exist
-ls -la .claude/agents/review-executor.md
-ls -la .claude/agents/feature-writer.md
-```
+**Note**: The `review-executor` and `feature-writer` agents are provided by the cc_workflow_tools plugin. No local agent files are required.
 
 ### Step 2: Extract Spec File Path and Extra Instructions
 
