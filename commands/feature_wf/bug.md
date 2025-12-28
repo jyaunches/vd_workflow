@@ -1,10 +1,6 @@
 ---
-name: bug
 description: Fix a bug using Test-Driven Development (TDD) methodology with optional automated execution
-usage: /bug <description> [--auto]
-examples:
-  - /bug The weather forecast command throws KeyError when API response is missing temperature data
-  - /bug CLI command fails with AttributeError when fetching weather --auto
+argument-hint: <description> [--auto]
 ---
 
 # bug: $ARGUMENTS

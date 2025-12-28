@@ -1,10 +1,6 @@
 ---
-name: execute-workflow
 description: Execute the complete feature development workflow from spec to implementation
-usage: /execute-workflow <spec_file_path>
-example:
-  - /execute-workflow specs/2025-11-09_15-23_report-storage-system.md
-  - /execute-workflow specs/2025-11-10_10-45_api-caching.md
+argument-hint: <spec_file_path>
 ---
 
 # Execute Automated Workflow: $ARGUMENTS

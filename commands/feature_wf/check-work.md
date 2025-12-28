@@ -1,10 +1,6 @@
 ---
-name: check_work
 description: Check acceptance criteria, run tests with auto-fixes, and recommend next steps after /implement-phase
-usage: /check-work <spec_file_path> <test_spec_file_path>
-examples:
-  - /check-work specs/2025-10-20_evaluation_checkpoint_recovery.md specs/tests_2025-10-20_evaluation_checkpoint_recovery.md
-  - /check-work specs/2025-01-08_weather-api-integration.md specs/tests_2025-01-08_weather-api-integration.md
+argument-hint: <spec_file_path> <test_spec_file_path>
 ---
 
 # Check Work: $ARGUMENTS

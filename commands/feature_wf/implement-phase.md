@@ -1,10 +1,6 @@
 ---
-name: implement_phase
 description: Execute implementation phases from specification and test specification files using test-driven development
-usage: /implement_phase <spec_file_path> <test_spec_file_path> [--auto]
-examples:
-  - /implement_phase specs/2025-01-08_weather-api-integration.md specs/tests_2025-01-08_weather-api-integration.md
-  - /implement_phase specs/2024-12-15_storm-alert-system.md specs/tests_2024-12-15_storm-alert-system.md --auto
+argument-hint: <spec_file_path> <test_spec_file_path> [--auto]
 ---
 
 # Implement Phase: $ARGUMENTS

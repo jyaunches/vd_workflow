@@ -1,10 +1,6 @@
 ---
-name: spec
 description: Create a new specification file for the project
-usage: /spec <feature_name> "<brief_description>"
-example:
-  - /spec weather_alerts_system "Enable automated weather alerts based on location and user preferences"
-  - /spec api_caching "Add Redis caching for API responses"
+argument-hint: <feature_name> "<brief_description>"
 ---
 
 # Create New Specification: $ARGUMENTS

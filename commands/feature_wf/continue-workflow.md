@@ -1,9 +1,5 @@
 ---
-name: continue_workflow
 description: Resume workflow execution after gap resolution
-usage: /continue_workflow
-example:
-  - /continue_workflow
 ---
 
 # Continue Workflow Execution

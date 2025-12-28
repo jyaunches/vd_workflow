@@ -1,9 +1,5 @@
 ---
-name: post-feature
 description: Post-feature due diligence check for documentation and deployment configuration
-usage: /post-feature
-example:
-  - /post-feature
 ---
 
 # Post-Feature Due Diligence Check
