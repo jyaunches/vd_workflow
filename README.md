@@ -48,16 +48,16 @@ Add to your project's `.claude/settings.json`:
 | `implement-phase` | Implement a spec phase using TDD |
 | `check-work` | Validate acceptance criteria |
 | `execute-workflow` | Run the complete workflow end-to-end |
+| `design-validation` | Design validation strategy for a spec |
+| `build-validation-tool` | Build custom validation tools |
 
 ### Utility Commands
 
 | Command | Description |
 |---------|-------------|
-| `add-doc` | Create documentation |
 | `capture-need` | Capture a feature need |
 | `fix-tests` | Run tests and fix failures |
 | `git_session_cleanup` | Clean up temporary files |
-| `track-learning` | Capture learnings from development |
 
 ## Agents
 
@@ -68,6 +68,7 @@ Add to your project's `.claude/settings.json`:
 | `spec-writer` | Creates technical specifications |
 | `tests-writer` | Generates comprehensive test suites |
 | `review-executor` | Orchestrates the spec review phase |
+| `validation-researcher` | Discovers validation tools and recommends approaches |
 
 ## Usage Example
 

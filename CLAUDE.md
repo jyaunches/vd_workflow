@@ -12,7 +12,7 @@ This is a Claude Code plugin (`cc_workflow_tools`) that provides spec-driven dev
 .claude-plugin/plugin.json    # Plugin manifest with hooks
 commands/                     # Slash commands (markdown files)
   feature_wf/                 # Feature workflow commands
-  init.md, add-doc.md, etc.   # Utility commands
+  init.md, fix-tests.md, etc. # Utility commands
 agents/                       # Agent definitions (markdown files)
 skills/                       # Expert skills (markdown files)
 hooks/                        # Session hooks (shell scripts)
