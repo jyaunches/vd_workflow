@@ -1,9 +1,10 @@
----
-description: Create a new specification file for the project
-argument-hint: <feature_name> "<brief_description>"
----
+# spec
 
-# Create New Specification: $ARGUMENTS
+Create a new specification file for the project.
+
+**Usage**: `/cc_workflow_tools:feature_wf:spec <feature_name> "<brief_description>"`
+
+## Create New Specification: $ARGUMENTS
 
 I'll create a comprehensive specification for this feature following this project's standards.
 
@@ -114,5 +115,23 @@ Every specification MUST include a final "Clean the House" phase with the follow
 I'll create the specification file in `specs/` following the naming convention: `YYYY-MM-DD_HH-mm_<feature_name>.md`
 - The date prefix uses today's date in YYYY-MM-DD_HH-mm format
 - This ensures specs are chronologically ordered by creation date
+
+## Validation Design Phase
+
+After creating the specification file, I'll invoke the validation design command to help you define how to validate this feature works correctly:
+
+```bash
+/cc_workflow_tools:feature_wf:design-validation <spec_file_path>
+```
+
+This Q&A-driven phase will:
+1. Ask about deployment and validation needs
+2. Propose validation requirements based on the spec
+3. Research available validation tools (MCP servers, CLIs, SDKs)
+4. Add a validation phase to your spec
+
+The validation phase ensures your feature can be verified after implementation.
+
+---
 
 Ready to proceed with creating the detailed specification for: **$ARGUMENTS**
