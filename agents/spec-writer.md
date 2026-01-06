@@ -1,6 +1,6 @@
 ---
 name: spec-writer
-description: Use this agent for creating technical specifications:\n\n1. **During /spec command** - Primary trigger for creating new feature specifications\n2. **During /feature_wf:spec** - Alternative trigger in feature workflow\n3. **During /bug for complex bugs** - When bugs require architectural specification\n4. **When explicitly requested** - User says "agent: spec-writer" or "write a spec"\n5. **After architecture design** - When architectural decisions need formal specification\n\nExamples:\n\n<example>\nContext: User wants to create a new feature specification.\nuser: "/spec Create a real-time alerting system for price movements"\nassistant: "I'll use the spec-writer agent to create a comprehensive technical specification."\n<uses Task tool to launch spec-writer agent>\n</example>\n\n<example>\nContext: User explicitly requests spec writing.\nuser: "agent: spec-writer - create a spec for adding caching to our FMP API client"\nassistant: "I'll use the spec-writer agent to write the technical specification."\n<uses Task tool to launch spec-writer agent>\n</example>\n\n<example>\nContext: Complex bug requires architectural changes.\nuser: "/bug Fix performance issues with real-time data processing - needs redesign"\nassistant: "Given the complexity, I'll use the spec-writer agent to create a specification for the architectural changes."\n<uses Task tool to launch spec-writer agent>\n</example>
+description: Use this agent for creating technical specifications:\n\n1. **During /spec command** - Primary trigger for creating new feature specifications\n2. **During /feature_wf:spec** - Alternative trigger in feature workflow\n3. **During /bug for complex bugs** - When bugs require architectural specification\n4. **When explicitly requested** - User says "agent: spec-writer" or "write a spec"\n5. **After architecture design** - When architectural decisions need formal specification\n\nExamples:\n\n<example>\nContext: User wants to create a new feature specification.\nuser: "/spec Create a real-time alerting system for data changes"\nassistant: "I'll use the spec-writer agent to create a comprehensive technical specification."\n<uses Task tool to launch spec-writer agent>\n</example>\n\n<example>\nContext: User explicitly requests spec writing.\nuser: "agent: spec-writer - create a spec for adding caching to our API client"\nassistant: "I'll use the spec-writer agent to write the technical specification."\n<uses Task tool to launch spec-writer agent>\n</example>\n\n<example>\nContext: Complex bug requires architectural changes.\nuser: "/bug Fix performance issues with real-time data processing - needs redesign"\nassistant: "Given the complexity, I'll use the spec-writer agent to create a specification for the architectural changes."\n<uses Task tool to launch spec-writer agent>\n</example>
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, BashOutput, KillShell, Edit, Write, NotebookEdit
 model: opus
 color: green
@@ -31,7 +31,7 @@ Every specification you create must adhere to these non-negotiable principles:
 - **No Code Samples**: Describe architecture conceptually - never include code snippets or implementation details
 
 ### Structure Standards
-- **src/ directory structure**: All benz repositories use `src/` directory for code
+- **src/ directory structure**: Projects should use `src/` directory for code (check PATTERNS.md for conventions)
 - **Direct integration**: No parallel systems - integrate directly into existing architecture
 
 ## Specification Structure
@@ -113,7 +113,7 @@ When specifying configuration requirements:
 
 ### Service Design Patterns
 
-When designing services for the benz ecosystem:
+When designing services:
 
 - **Standalone services** - no inter-service dependencies
 - **Self-contained models** - copied into each service

@@ -144,7 +144,7 @@ Test 1: test_volatility_fields
 
 Test 2: test_historical_endpoint
   Status: CLEAR CONTEXT
-  Related commit: 4396645 "fix: Remove incorrect price reversal in FMP client"
+  Related commit: 4396645 "fix: Remove incorrect data transformation in API client"
   Failure: List index out of expected order
   Analysis: Test assumes prices are oldest-first, but commit 4396645 changed to newest-first
   Fix: Reverse test expectations to match new ordering
@@ -166,7 +166,7 @@ Fixing test_volatility_fields...
 Fixing test_historical_endpoint...
   ✓ Reversed list ordering expectations
   ✓ Test now passes
-  ✓ Committed: "test: Fix test_historical_endpoint after FMP ordering fix"
+  ✓ Committed: "test: Fix test_historical_endpoint after API ordering fix"
 
 === Phase 4: Unclear Cases - User Guidance Needed ===
 
@@ -179,7 +179,7 @@ Failure:
 Recent commits (last 10):
   6f6d5a6 test: Update tests for new volatility fields and dual fetch strategy
   fc609a4 fix: Align historical-context volatility calculation with realtime-context
-  4396645 fix: Remove incorrect price reversal in FMP client
+  4396645 fix: Remove incorrect data transformation in API client
   77f10dd Fix exception handling to properly log errors and return correct HTTP status codes
   ...
 

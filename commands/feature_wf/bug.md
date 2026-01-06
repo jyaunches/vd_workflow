@@ -50,7 +50,7 @@ fi
 3. **Choose the appropriate test file location:**
    - **Add to existing test file**: If tests for the affected module/class already exist, add the new test to that file
    - **Create new logical test file**: Only if no appropriate test file exists, create one following the naming convention:
-     - For module `src/news_analyzer/reporting.py`, use `tests/unit/test_reporting.py`
+     - For module `src/myservice/reporting.py`, use `tests/unit/test_reporting.py`
      - For class `ReportingService`, add tests to existing `TestReportingService` class if it exists
      - Name test classes after the module/class being tested (e.g., `TestReportingService`, `TestBatchProcessor`)
    - **Never create bug-specific files**: Avoid names like `test_xyz_bug.py` or `test_issue_123.py`

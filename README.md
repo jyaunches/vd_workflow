@@ -81,4 +81,4 @@ Add to your project's `.claude/settings.json`:
 
 ## License
 
-Private - managed by benz_mgmt repository.
+MIT License

@@ -9,7 +9,7 @@ Perform comprehensive validation after implementing a feature to ensure document
 ## Objectives
 
 1. **Documentation Validation**: Audit all project documentation for accuracy and completeness
-2. **Deployment Configuration**: Verify GitHub workflows and Fly.io configuration have necessary environment variables and settings
+2. **Deployment Configuration**: Verify GitHub workflows and deployment configuration have necessary environment variables and settings
 
 ## Documentation Audit
 
@@ -77,9 +77,8 @@ For each file, provide:
 ### Scope
 Review deployment-related files:
 - `.github/workflows/*.yml` - All GitHub Actions workflows
-- `fly.toml` - Fly.io deployment configuration
-- `fly.staging.toml` - Staging environment config (if exists)
-- `fly.production.toml` - Production environment config (if exists)
+- Deployment configuration files (e.g., `fly.toml`, `render.yaml`, `railway.json`)
+- Staging/production environment configs (if separate files exist)
 - `Dockerfile` - Container build configuration
 - `.env.example` - Environment variable template
 
@@ -104,8 +103,8 @@ Review deployment-related files:
    - Common issue: Using `http2=True`, `h2=True`, or other optional features without installing the extra packages
    - Example: If code uses `httpx.AsyncClient(http2=True)`, ensure `httpx[http2]` is in dependencies
 
-3. **Fly.io Configuration**
-   - Does `fly.toml` include new environment variables?
+3. **Deployment Platform Configuration**
+   - Does the deployment config include new environment variables?
    - Are new internal service dependencies configured?
    - Do health checks account for new endpoints?
    - Are resource limits appropriate for new features?
@@ -134,16 +133,16 @@ Recommendations:
    [SECRET_NAME]="${{ secrets.[SECRET_NAME] }}" \
    ```
 
-### Fly.io Configuration
-**File**: `fly.toml`
+### Deployment Platform Configuration
+**File**: Deployment config (e.g., `fly.toml`, `render.yaml`, etc.)
 
 Issues:
-- [ ] **Missing Env Var**: `[VAR_NAME]` should be in [env] section
-- [ ] **Missing Service Link**: New dependency on `[service-name].internal`
+- [ ] **Missing Env Var**: `[VAR_NAME]` should be in environment section
+- [ ] **Missing Service Link**: New dependency on internal service
 
 Recommendations:
-1. Add to [env] section:
-   ```toml
+1. Add to environment configuration:
+   ```
    [VAR_NAME] = "[default_value]"
    ```
 
@@ -171,7 +170,6 @@ Recommendations:
 2. Search for new environment variables in code:
    ```bash
    grep -r "os.getenv\|Settings\(\)" src/ --include="*.py"
-   grep -r "RESEARCHER\|FMP\|SUPABASE\|OPENAI" src/ --include="*.py"
    ```
 
 3. Check for new service integrations:
@@ -195,16 +193,9 @@ Recommendations:
 
 After a feature implementation, consider whether the repository's expert skill file should be updated to reflect new architectural patterns, features, or integrations.
 
-### Repository-Skill Mapping
+### Repository-Skill Detection
 
-| Repository | Skill File | Description |
-|-----------|------------|-------------|
-| benz_evaluator | `.claude/skills/evaluation-expert.md` | Historical evaluation pipeline and metrics |
-| benz_analyzer | `.claude/skills/pipeline-expert.md` | News analysis pipeline architecture |
-| benz_researcher | `.claude/skills/historical-context-expert.md` | Historical data research patterns |
-| benz_sent_filter | `.claude/skills/sentiment-filter-expert.md` | Sentiment filtering algorithms |
-| benz_eval_prep | `.claude/skills/eval-prep-expert.md` | Evaluation data preparation |
-| benz_realtime_trader | `.claude/skills/realtime-trader-expert.md` | Real-time trading system |
+Skills are located in `.claude/skills/` with naming convention `*-expert.md`. The post-feature command will automatically detect skill files in the current repository by checking for files matching this pattern.
 
 ### When to Update Skill
 
@@ -248,23 +239,13 @@ Skip skill updates for:
 When executing this step:
 
 ```bash
-# Detect repository name from working directory
-REPO_NAME=$(basename $(pwd))
+# Find skill files in the repository
+SKILL_FILES=$(find .claude/skills -name "*-expert.md" 2>/dev/null)
 
-# Map to skill file
-case $REPO_NAME in
-  "benz_evaluator") SKILL_FILE=".claude/skills/evaluation-expert.md" ;;
-  "benz_analyzer") SKILL_FILE=".claude/skills/pipeline-expert.md" ;;
-  "benz_researcher") SKILL_FILE=".claude/skills/historical-context-expert.md" ;;
-  "benz_sent_filter") SKILL_FILE=".claude/skills/sentiment-filter-expert.md" ;;
-  "benz_eval_prep") SKILL_FILE=".claude/skills/eval-prep-expert.md" ;;
-  "benz_realtime_trader") SKILL_FILE=".claude/skills/realtime-trader-expert.md" ;;
-  *) SKILL_FILE="" ;;
-esac
-
-# If skill file exists, prompt user
-if [ -n "$SKILL_FILE" ] && [ -f "$SKILL_FILE" ]; then
-  echo "This repository has a $SKILL_FILE documenting system architecture."
+# If skill files exist, prompt user
+if [ -n "$SKILL_FILES" ]; then
+  echo "This repository has skill files documenting system architecture:"
+  echo "$SKILL_FILES"
   echo ""
   echo "Based on your recent changes, consider reviewing the skill if you:"
   # List the "When to Update" criteria

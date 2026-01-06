@@ -25,7 +25,7 @@ You are an expert in:
    - Expert skill creation for new repositories
 
 4. **Project Type Variations**
-   - FastAPI/HTTP services (with Dockerfile, fly.toml)
+   - FastAPI/HTTP services (with Dockerfile, deployment config)
    - CLI tools (with Click entry points)
    - GitHub Actions-only services (no deployment config)
    - Libraries (minimal deployment, focus on packaging)
@@ -59,7 +59,7 @@ Determine project type from these signals:
 
 | Signal | Project Type |
 |--------|--------------|
-| `fly.toml` + `Dockerfile` | Fly.io deployed service |
+| Deployment config + `Dockerfile` | Cloud-deployed service |
 | `.github/workflows/*.yml` only | GitHub Actions service |
 | `[project.scripts]` in pyproject.toml | CLI tool |
 | FastAPI/uvicorn in dependencies | HTTP API service |
@@ -86,7 +86,7 @@ Ask about:
 3. **Reference repository** - Path to copy patterns from
 4. **Description** - Brief project purpose
 5. **Dependencies** - Key libraries needed
-6. **Deployment** - Fly.io, GitHub Actions, None
+6. **Deployment** - Cloud Platform, GitHub Actions, None
 7. **Database** - Supabase, PostgreSQL, None
 8. **External APIs** - What integrations needed
 

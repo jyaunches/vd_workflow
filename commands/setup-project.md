@@ -5,7 +5,7 @@ usage: /cc_workflow_tools:setup-project [--reference <repo_path>]
 argument-hint: "[--reference ../existing_repo]"
 examples:
   - /cc_workflow_tools:setup-project
-  - /cc_workflow_tools:setup-project --reference ../benz_researcher
+  - /cc_workflow_tools:setup-project --reference ../existing_project
 ---
 
 # setup-project: $ARGUMENTS
@@ -95,8 +95,8 @@ Ask the following questions to configure the new project. Use the `AskUserQuesti
 Project Setup - Identity
 
 1. Project Name:
-   - Repository name (e.g., benz_position_manager)
-   - Package name will be derived (benz_position_manager → benz-position-manager)
+   - Repository name (e.g., my_data_processor)
+   - Package name will be derived (my_data_processor → my-data-processor)
 
 2. Project Description:
    - Brief one-line description of the project's purpose
@@ -109,7 +109,7 @@ What type of project is this?
 
 Options:
 1. CLI Tool - Command-line application with Click entry point
-2. FastAPI Service - HTTP API deployed to Fly.io
+2. FastAPI Service - HTTP API deployed to cloud platform
 3. GitHub Actions Service - Runs via scheduled/triggered workflows only
 4. Library - Reusable package, no deployment
 5. Other - Custom configuration
@@ -123,7 +123,7 @@ Based on project type, ask about deployment:
 ```
 Deployment Configuration:
 
-1. Fly.io App Name: (e.g., benz-researcher)
+1. App/Service Name: (e.g., my-api-service)
 2. Internal Port: (default: 8000)
 3. Memory: (default: 512mb)
 ```
@@ -162,9 +162,9 @@ Common options (select all that apply):
 What environment variables will this project need?
 
 Categories:
-1. API Keys (e.g., ALPACA_API_KEY, OPENAI_API_KEY)
-2. Database (e.g., DATABASE_URL, SUPABASE_URL)
-3. Email (e.g., SENDGRID_API_KEY)
+1. API Keys (e.g., API_KEY, EXTERNAL_SERVICE_KEY)
+2. Database (e.g., DATABASE_URL, DB_HOST)
+3. Services (e.g., REDIS_URL, CACHE_HOST)
 4. Other (specify)
 ```
 

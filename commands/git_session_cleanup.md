@@ -41,7 +41,7 @@ Perform a comprehensive cleanup that includes:
 ## Uncommitted Changes Analysis
 
 ### Group 1: Timezone handling improvements (relates to commit 05b946d)
-Files: src/benz_eval_prep/utils/date_utils.py, tests/unit/utils/test_date.py
+Files: src/myapp/utils/date_utils.py, tests/unit/utils/test_date.py
 Analysis: These changes appear to extend the timezone fixes from commit 05b946d
 Suggestion: Commit as "fix: Additional timezone handling improvements for date_utils
 
