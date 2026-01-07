@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "cc_workflow_tools",
-      "source": ".",
+      "source": "..",
       "description": "Spec-driven development workflow commands, agents, and skills"
     }
   ]
