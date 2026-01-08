@@ -1,3 +1,8 @@
+---
+description: Review specification for unnecessary complexity and over-engineering
+argument-hint: <spec_path> [test_spec_path] [--auto-apply]
+---
+
 # Spec Simplify
 
 Review a specification for unnecessary complexity and over-engineering. This is a **simplification-only pass** that runs before the full spec-review.
@@ -227,7 +232,7 @@ When `--auto-apply` flag is present, use intelligent filtering:
 
 For each recommendation, determine category:
 
-**Auto-Apply** (align with PATTERNS.md and existing architecture):
+**Auto-Apply** (align with `shared_docs/PATTERNS.md` and existing architecture):
 - Removing YAGNI features (future-proofing, "just in case" code)
 - Removing premature abstractions (base class with one subclass, single-use utilities)
 - Simplifying tests (reducing mock complexity, parametrized → simple tests)
@@ -272,7 +277,7 @@ If ALL recommendations are auto-applied (none need approval):
 > **Auto-Applied All Simplifications:** Sections 1-6 via `/take-recommendations`
 > (removed ~165 LOC, 8 concepts)
 >
-> All recommendations aligned with PATTERNS.md and existing architecture.
+> All recommendations aligned with `shared_docs/PATTERNS.md` and existing architecture.
 > Git history contains individual commits for each simplification.
 
 ## Success Metrics

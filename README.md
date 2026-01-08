@@ -104,8 +104,9 @@ After installing, initialize your project:
 ```
 
 This creates:
-- `.claude/PATTERNS.md` - Defines patterns for auto-apply decisions
 - `specs/` directory - Where specifications are stored
+
+The plugin includes `shared_docs/PATTERNS.md` which defines patterns for auto-apply decisions.
 
 ### Ecosystem Mode (Optional)
 
@@ -143,10 +144,10 @@ With ecosystem mode, you can use the `cross-repo-researcher` agent to investigat
 
 | Command | Description |
 |---------|-------------|
-| `init` | Initialize project with PATTERNS.md, specs/, and optional ecosystem mode |
+| `init` | Initialize project with specs/ directory and optional ecosystem mode |
 | `setup-project` | Scaffold a new repository with ecosystem integration |
 | `fix-tests` | Run tests and fix failures |
-| `git_session_cleanup` | Clean up temporary files |
+| `git-session-cleanup` | Clean up temporary files |
 
 ## Agents
 

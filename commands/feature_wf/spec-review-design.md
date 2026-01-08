@@ -1,3 +1,8 @@
+---
+description: Review specification for design improvements and architectural alignment
+argument-hint: <spec_path> <test_spec_path> [--auto-apply]
+---
+
 # Spec Review - Design
 
 Review a specification and its test specification for design improvements and architectural alignment.
@@ -62,7 +67,7 @@ Automatically applies safe recommendations, pauses only for architectural decisi
 ### Auto-Apply Mode (`--auto-apply` flag)
 1. **Present Design Recommendations**: Show all Phase 1 findings with numbered sections
 2. **Intelligent Recommendation Filtering**:
-   - **Auto-Apply**: Recommendations aligned with PATTERNS.md and existing architecture
+   - **Auto-Apply**: Recommendations aligned with `shared_docs/PATTERNS.md` and existing architecture
      - Pythonic improvements (dataclasses, type hints, context managers)
      - Using existing module patterns
      - Leveraging stdlib features

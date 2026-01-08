@@ -74,10 +74,11 @@ All specs must include a final "Clean the House" phase for post-implementation c
 ## Project Setup
 
 When this plugin is used in a project, it expects:
-- `.claude/PATTERNS.md` - Defines patterns for auto-apply decisions
 - `specs/` directory - Where specifications are stored
 
-Run `/cc_workflow_tools:init` to create these.
+Run `/cc_workflow_tools:init` to create this.
+
+The plugin includes `shared_docs/PATTERNS.md` which defines patterns for auto-apply decisions during spec reviews.
 
 ### Ecosystem Mode (Optional)
 

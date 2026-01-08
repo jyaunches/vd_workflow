@@ -1,3 +1,8 @@
+---
+description: Review specification for implementation clarity and technical decisions
+argument-hint: <spec_path> <test_spec_path> [--auto-apply]
+---
+
 # Spec Review - Implementation
 
 Review a specification and its test specification for implementation clarity and technical decisions using intelligent filtering.

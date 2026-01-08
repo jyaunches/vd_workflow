@@ -31,7 +31,7 @@ Every specification you create must adhere to these non-negotiable principles:
 - **No Code Samples**: Describe architecture conceptually - never include code snippets or implementation details
 
 ### Structure Standards
-- **src/ directory structure**: Projects should use `src/` directory for code (check PATTERNS.md for conventions)
+- **src/ directory structure**: Projects should use `src/` directory for code (see `shared_docs/PATTERNS.md` for conventions)
 - **Direct integration**: No parallel systems - integrate directly into existing architecture
 
 ## Specification Structure

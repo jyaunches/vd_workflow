@@ -1,5 +1,5 @@
 ---
-description: Initialize project with starter files for the workflow (PATTERNS.md, specs/, and optional ecosystem mode)
+description: Initialize project with specs/ directory and optional ecosystem mode
 ---
 
 # Initialize Project for Workflow Tools
@@ -12,14 +12,11 @@ First, check which files already exist:
 
 ```bash
 echo "=== Checking project setup ==="
-[ -f ".claude/PATTERNS.md" ] && echo "PATTERNS.md: EXISTS" || echo "PATTERNS.md: MISSING"
 [ -d "specs" ] && echo "specs/: EXISTS" || echo "specs/: MISSING"
 [ -d ".claude/skills" ] && echo ".claude/skills/: EXISTS (ecosystem mode)" || echo ".claude/skills/: NOT SET UP"
 ```
 
-## Step 2: Create Basic Files
-
-### Create specs directory (if missing)
+## Step 2: Create specs Directory
 
 If the `specs/` directory doesn't exist, create it:
 
@@ -27,77 +24,7 @@ If the `specs/` directory doesn't exist, create it:
 mkdir -p specs
 ```
 
-### Create PATTERNS.md (if missing)
-
-If `.claude/PATTERNS.md` doesn't exist, create it with this starter template:
-
-```markdown
-# Project Patterns
-
-This file defines coding patterns and conventions for this project. The workflow tools use this to decide which recommendations to auto-apply vs ask about.
-
-## Language & Framework
-
-- **Language**: [Python/TypeScript/Go/etc.]
-- **Framework**: [FastAPI/Express/etc. or None]
-- **Package Manager**: [uv/npm/etc.]
-
-## Code Style
-
-### Naming Conventions
-- Functions: snake_case / camelCase
-- Classes: PascalCase
-- Constants: SCREAMING_SNAKE_CASE
-- Files: snake_case / kebab-case
-
-### Type Annotations
-- [Required / Preferred / Optional]
-- Use dataclasses for data structures: [Yes / No]
-
-## Architecture Patterns
-
-### Project Structure
-```
-src/
-├── module_name/
-│   ├── __init__.py
-│   ├── models.py
-│   └── services.py
-└── tests/
-```
-
-### Dependency Injection
-- [Constructor injection / Global singletons / etc.]
-
-### Error Handling
-- Use custom exceptions: [Yes / No]
-- Error response format: [Describe]
-
-## Testing Patterns
-
-- Test framework: [pytest / jest / etc.]
-- Test file naming: `test_*.py` / `*.test.ts`
-- Use fixtures: [Yes / No]
-- Integration tests use: [testcontainers / mocks / etc.]
-
-## What to Auto-Apply
-
-These changes align with our patterns and can be applied automatically:
-- Adding type hints to function signatures
-- Converting dicts to dataclasses
-- Using context managers for resources
-- Following existing module patterns
-
-## What Needs Discussion
-
-These changes need human review:
-- Adding new dependencies
-- Changing public API signatures
-- Architectural restructuring
-- Database schema changes
-```
-
-**Important**: Customize this template for your specific project. The more accurate your PATTERNS.md, the better the workflow can auto-apply safe changes.
+This is where feature specifications will be stored when using `/spec` command.
 
 ## Step 3: Ecosystem Mode (Optional)
 
@@ -200,13 +127,10 @@ Skip skills setup. The project will use standard workflow without cross-repo fea
 After running this command, you should have:
 
 **Basic setup (always):**
-- `.claude/PATTERNS.md` - Customize this for your project's patterns
 - `specs/` directory - Where feature specifications will be stored
 
 **Ecosystem mode (if enabled):**
 - `.claude/skills/{project}_expert.md` - Expert knowledge for this repo
 - `~/.claude/ecosystem-config.json` - Registry of your ecosystems
 
-The workflow commands (`/cc_workflow_tools:feature_wf:execute-workflow`, etc.) will now use PATTERNS.md to make smarter decisions about which recommendations to auto-apply.
-
-**Next step**: Edit `.claude/PATTERNS.md` to match your project's actual patterns and conventions.
+The workflow commands (`/cc_workflow_tools:feature_wf:execute-workflow`, etc.) use the plugin's `shared_docs/PATTERNS.md` to guide auto-apply decisions.

@@ -14,7 +14,7 @@ I'll execute the complete automated two-phase workflow for the specified specifi
 The workflow executes in two independent phases:
 
 **Phase 1: Review (review-executor agent)**
-1. Simplify Specification - Apply PATTERNS.md enforcement
+1. Simplify Specification - Apply pattern enforcement from `shared_docs/PATTERNS.md`
 2. Generate Test Specification - Create comprehensive test specs
 3. Design Review - Review design patterns and architecture
 4. Implementation Review - Review implementation decisions and clarity
@@ -23,7 +23,7 @@ The workflow executes in two independent phases:
 5. Implement Phases - TDD-based phase implementation (tracked with beads)
 6. Validation - Run tests and validate acceptance criteria (tracked with beads)
 
-**Intelligent Recommendation Filtering**: Review phase automatically applies recommendations that align with PATTERNS.md and existing architecture, but pauses for user approval on architectural changes, breaking changes, or new dependencies.
+**Intelligent Recommendation Filtering**: Review phase automatically applies recommendations that align with `shared_docs/PATTERNS.md` and existing architecture, but pauses for user approval on architectural changes, breaking changes, or new dependencies.
 
 ---
 
@@ -41,13 +41,8 @@ ls -la .beads/ 2>/dev/null || echo "BEADS_NOT_INITIALIZED"
 ```
 
 ```bash
-# Check PATTERNS.md exists (optional - enhances auto-apply decisions)
-if [ -f ".claude/PATTERNS.md" ]; then
-    echo "PATTERNS.md: FOUND - pattern enforcement enabled"
-else
-    echo "PATTERNS.md: NOT FOUND - run /cc_workflow_tools:init to create starter template"
-    echo "(workflow will continue but may ask about more recommendations)"
-fi
+# Check specs directory exists
+[ -d "specs" ] && echo "specs/: FOUND" || echo "specs/: NOT FOUND - run /cc_workflow_tools:init"
 ```
 
 **Note**: The `review-executor` and `feature-writer` agents are provided by the cc_workflow_tools plugin. No local agent files are required.

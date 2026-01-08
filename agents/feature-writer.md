@@ -193,7 +193,7 @@ Task(
 This agent relies on:
 - **Tier 3**: `.claude/commands/feature_wf/implement-phase.md` - Phase implementation procedure
 - **Tier 3**: `.claude/commands/feature_wf/check-work.md` - Validation procedure
-- **Tier 3**: `shared_docs/BEADS_GUIDE.md` - Beads MCP tool reference
+- **External**: Beads MCP tool for progress tracking
 
 ---
 

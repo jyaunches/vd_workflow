@@ -1,3 +1,8 @@
+---
+description: Create test guides aligned with specification phases for TDD
+argument-hint: <spec_file> [instructions]
+---
+
 # spec-tests
 
 Create comprehensive test guides aligned with specification phases for incremental TDD implementation.

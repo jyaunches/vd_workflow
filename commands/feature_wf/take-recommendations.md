@@ -1,3 +1,8 @@
+---
+description: Apply specific recommendations from spec-review by section number
+argument-hint: sections: <comma-separated list>
+---
+
 # Take Recommendations
 
 Apply specific recommendations from a spec-review session by section number, updating both spec and test spec files incrementally.

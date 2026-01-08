@@ -1,3 +1,8 @@
+---
+description: Create a new specification file for the project
+argument-hint: <feature_name> "<description>"
+---
+
 # spec
 
 Create a new specification file for the project.

@@ -42,9 +42,10 @@ When given a reference repository path, analyze:
 ├── settings.local.json    → Local permissions (don't copy)
 ├── commands/              → Symlink target or local commands
 ├── agents/                → Custom agents (if any)
-├── skills/                → Expert skills pattern
-└── PATTERNS.md            → Safe auto-apply patterns (if exists)
+└── skills/                → Expert skills pattern
 ```
+
+Note: PATTERNS.md now lives in the cc_workflow_tools plugin at `shared_docs/PATTERNS.md`.
 
 **Key Questions to Answer:**
 - What plugin marketplaces are configured?
