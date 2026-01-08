@@ -193,7 +193,7 @@ Based on the answers, generate the project structure.
 
 ```bash
 # Basic structure (always)
-mkdir -p {project_name}/{.claude,src/{package_name},tests,docs/specs,.github/workflows}
+mkdir -p {project_name}/{.claude,src/{package_name},tests,docs,.github/workflows}
 
 # Ecosystem mode only
 if [ "$ECOSYSTEM_MODE" = "yes" ]; then
