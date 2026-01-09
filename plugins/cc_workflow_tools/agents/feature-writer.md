@@ -1,6 +1,6 @@
 ---
 name: feature-writer
-description: Use this agent for implementing feature phases from reviewed specifications:\n\n1. **During /execute-wf** - Automatically invoked at Step 8 for implementation\n2. **After spec review completion** - When ready to implement reviewed specs with beads tracking\n3. **Phase-by-phase implementation** - Executes /execute-wf:implement-phase for each phase\n4. **Feature validation** - Runs /execute-wf:check-work after all phases complete\n\nExamples:\n\n<example>\nContext: User has completed spec review and wants to implement.\nuser: "The specs are reviewed. Let's implement the feature."\nassistant: "I'll use the feature-writer agent to implement all phases tracked in beads."\n<uses Task tool to launch feature-writer agent>\n</example>\n\n<example>\nContext: Part of /execute-wf at Step 8.\nuser: "/execute-wf --spec my-feature-spec.md"\nassistant: "[At Step 8] Using feature-writer agent to implement all phases..."\n<uses Task tool to launch feature-writer agent>\n</example>
+description: Implement feature phases from reviewed specifications. Executes phases sequentially using beads for progress tracking, then runs validation.
 tools: "*"
 model: sonnet
 color: blue

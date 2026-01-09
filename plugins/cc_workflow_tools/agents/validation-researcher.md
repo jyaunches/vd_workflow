@@ -1,6 +1,6 @@
 ---
 name: validation-researcher
-description: Use this agent for researching validation options during spec creation:\n\n1. **During /design-validation command** - Automatically invoked to research available validation tools\n2. **When exploring validation strategies** - Finding MCP servers, CLIs, SDKs for validation\n3. **Tool discovery** - Auto-discovering installed tools in a project\n\nThis agent is invoked as a subagent to keep context focused. It returns ONLY recommendations and optional design plans.\n\nExamples:\n\n<example>\nContext: /design-validation needs to find validation tools for a cloud deployment.\ndesign-validation command: "Research validation options for this deployed service spec"\nassistant: <uses Task tool to launch validation-researcher agent>\nagent returns: Discovered tools + recommendations for health check validation\n</example>\n\n<example>\nContext: /design-validation needs browser testing options.\ndesign-validation command: "Research validation for web UI changes"\nassistant: <uses Task tool to launch validation-researcher agent>\nagent returns: Found playwright-mcp installed, recommends using it for E2E tests\n</example>
+description: Research validation tools and strategies for specifications. Discovers MCP servers, CLIs, and SDKs available in the project. Returns structured recommendations for validation approaches.
 tools: Glob, Grep, Read, Bash
 model: sonnet
 color: yellow
