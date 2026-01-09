@@ -1,11 +1,6 @@
 ---
-name: setup-project
 description: Set up a new repository with ecosystem integration via Q&A-driven scaffolding
-usage: /cc_workflow_tools:setup-project [--reference <repo_path>]
-argument-hint: "[--reference ../existing_repo]"
-examples:
-  - /cc_workflow_tools:setup-project
-  - /cc_workflow_tools:setup-project --reference ../existing_project
+argument-hint: [--reference ../existing_repo]
 ---
 
 # setup-project: $ARGUMENTS
