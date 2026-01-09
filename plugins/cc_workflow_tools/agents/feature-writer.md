@@ -10,24 +10,9 @@ color: blue
 
 **Purpose**: Implements feature phases based on reviewed specs, using beads to track implementation progress. Routes to appropriate `/execute-wf:*` commands for implementation and validation.
 
-## ⚠️ CRITICAL: No Agent Recursion
+## Execution Model
 
-**DO NOT spawn another feature-writer agent.** This agent must execute ALL phases in a single invocation using an internal loop pattern.
-
-**WRONG** (causes infinite loop):
-```
-# After completing a phase...
-Task(subagent_type="feature-writer", ...)  # ❌ NEVER DO THIS
-```
-
-**CORRECT** (internal loop):
-```
-while ready_tasks_exist:
-    task = query_next_ready_task()
-    execute_phase(task)
-    close_task(task)
-    # Loop continues automatically - no new agent spawn
-```
+This agent uses an **internal loop** to process all phases in a single invocation. After completing each phase, query beads for the next task and continue looping until done.
 
 ## Termination Conditions
 
@@ -94,9 +79,7 @@ If blocked:
 bd update <task-id> --status blocked --notes "<issue_details>" --json
 ```
 
-## Implementation Flow (Internal Loop)
-
-**This is a SINGLE agent execution with an internal loop - NOT multiple agent spawns.**
+## Implementation Flow
 
 ```
 LOOP:
@@ -108,7 +91,7 @@ LOOP:
      - Update task to in_progress
      - Execute the appropriate command based on task title
      - Close the task on success (or block on failure)
-     - GOTO step 1 (continue loop - DO NOT spawn new agent)
+     - Continue loop
 ```
 
 **Phase Task Execution:**
@@ -117,7 +100,7 @@ LOOP:
 3. Execute `/execute-wf:implement-phase <spec_file> <test_spec_file> --auto`
 4. On success: `bd close <task-id> --reason "Completed" --json`
 5. On failure: `bd update <task-id> --status blocked --notes "..." --json` → EXIT
-6. **Loop back to step 1** (query for next ready task)
+6. Loop back to step 1
 
 **Validation Task Execution:**
 1. `bd ready --json` → should return validation task
@@ -190,7 +173,7 @@ except Exception as e:
 
 ## Agent Invocation
 
-This agent is invoked by `/execute-wf` at Step 8 (after review phase and beads creation):
+This agent is invoked by `/execute-wf` after review phase and beads creation:
 
 ```
 Task(
@@ -199,32 +182,14 @@ Task(
     prompt=f"""
     Implement the feature defined in reviewed specs: {spec_file}
 
-    The beads epic and phase tasks have been created based on the reviewed specs.
-
-    ⚠️ CRITICAL: Do NOT spawn another feature-writer agent. Execute ALL phases
-    in THIS invocation using an internal loop. After completing each phase,
-    query beads for the next ready task and continue - do not spawn a new agent.
-
-    Your responsibilities (in a loop):
-    1. Query beads for the next ready task (bd ready --json)
-    2. If no ready tasks and epic closed → EXIT SUCCESS
-    3. If ready task exists:
-       - Update task to in_progress
-       - Execute the appropriate command based on task title
-       - Close the task on success
-       - Loop back to step 1 (DO NOT spawn new agent)
+    Beads epic and phase tasks have been created. Loop through them:
+    1. Query beads for next ready task (bd ready --json)
+    2. Execute the appropriate command based on task title
+    3. Close task on success, continue to next
 
     Task routing:
-    - "Phase N: ..." → /execute-wf:implement-phase {spec_file} <test_spec_file> --auto
-    - "Validation" → /execute-wf:check-work {spec_file} <test_spec_file>
-
-    Key details:
-    - Spec file: {spec_file}
-    - Test spec file: {test_spec_file}
-    - Use --auto flag for non-interactive implementation
-    - Follow TDD approach for each phase
-
-    Follow the feature-writer agent instructions for complete execution pattern.
+    - "Phase N: ..." → /execute-wf:implement-phase {spec_file} {test_spec_file} --auto
+    - "Validation" → /execute-wf:check-work {spec_file} {test_spec_file}
     """
 )
 ```
