@@ -390,6 +390,46 @@ Skill content and instructions...
 3. Restart Claude Code
 4. Re-add marketplace: `/plugin marketplace add owner/repo`
 
+### Nuclear Cleanup (Complete Reset)
+
+When a plugin is completely broken and nothing else works, use the nuclear cleanup script:
+
+```bash
+# From this plugin's skill directory, or copy the script
+./nuclear-cleanup.sh <plugin_name> <marketplace_name> [github_repo]
+
+# Example for cc_workflow_tools:
+./nuclear-cleanup.sh cc_workflow_tools cc_workflow_tools jyaunches/cc_workflow_tools
+```
+
+This script removes ALL traces of a plugin from:
+- `~/.claude/plugins/cache/`
+- `~/.claude/plugins/marketplaces/`
+- `~/.claude/settings.json`
+- `~/.claude/plugins/known_marketplaces.json`
+- `~/.claude/plugins/installed_plugins.json`
+
+After running, restart Claude Code and re-add the marketplace fresh.
+
+**Manual Nuclear Cleanup** (if script unavailable):
+```bash
+PLUGIN="cc_workflow_tools"
+MARKETPLACE="cc_workflow_tools"
+
+# Remove cache and marketplace dirs
+rm -rf ~/.claude/plugins/cache/$MARKETPLACE
+rm -rf ~/.claude/plugins/marketplaces/$MARKETPLACE
+rm -rf ~/.claude/plugins/marketplaces/github.com-*$MARKETPLACE*
+
+# Clean JSON files (requires jq)
+cat ~/.claude/settings.json | jq "del(.enabledPlugins[\"${PLUGIN}@${MARKETPLACE}\"]) | del(.extraKnownMarketplaces[\"${MARKETPLACE}\"])" > /tmp/s.json && mv /tmp/s.json ~/.claude/settings.json
+cat ~/.claude/plugins/known_marketplaces.json | jq "del(.[\"${MARKETPLACE}\"])" > /tmp/k.json && mv /tmp/k.json ~/.claude/plugins/known_marketplaces.json
+cat ~/.claude/plugins/installed_plugins.json | jq "del(.plugins[\"${PLUGIN}@${MARKETPLACE}\"])" > /tmp/i.json && mv /tmp/i.json ~/.claude/plugins/installed_plugins.json
+
+# Then restart Claude Code and re-add:
+# /plugin marketplace add jyaunches/cc_workflow_tools
+```
+
 ### Common JSON Errors
 - Source path must start with `./` (not `.` or bare path)
 - Missing commas between properties
