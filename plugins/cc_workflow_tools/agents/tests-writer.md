@@ -1,6 +1,14 @@
 ---
 name: tests-writer
-description: Use this agent for comprehensive test generation in the following scenarios:\n\n1. **During /execute-wf workflow** - Automatically invoked during test implementation phases\n2. **When using /bug command** - Test-Driven Development for bug fixes\n3. **When TDD is mentioned** - Any time Test-Driven Development is discussed or requested\n4. **After code implementation** - When user has written or modified code and needs tests\n\nExamples:\n\n<example>\nContext: User is executing /execute-wf:implement-phase for a feature.\nuser: "/execute-wf:implement-phase --phase 2"\nassistant: "I'll use the tests-writer agent to implement comprehensive tests as part of this phase."\n<uses Task tool to launch tests-writer agent>\n</example>\n\n<example>\nContext: User is fixing a bug using the /bug command.\nuser: "/bug Fix authentication error when token expires"\nassistant: "Following TDD methodology, I'll use the tests-writer agent to write failing tests first."\n<uses Task tool to launch tests-writer agent>\n</example>\n\n<example>\nContext: User mentions TDD approach.\nuser: "Let's use TDD to implement this new calculation feature"\nassistant: "I'll use the tests-writer agent to start with comprehensive test specifications."\n<uses Task tool to launch tests-writer agent>\n</example>\n\n<example>\nContext: User has just implemented a new API client class.\nuser: "I've finished implementing the ApiClient class in src/myservice/providers/client.py. Can you help me write tests for it?"\nassistant: "I'll use the tests-writer agent to generate comprehensive test coverage for your ApiClient class."\n<uses Task tool to launch tests-writer agent>\n</example>
+description: |
+  Use this agent for comprehensive test generation:
+
+  1. **During /execute-wf workflow** - Automatically invoked during test implementation phases
+  2. **When using /bug command** - Test-Driven Development for bug fixes
+  3. **When TDD is mentioned** - Any time Test-Driven Development is discussed or requested
+  4. **After code implementation** - When user has written or modified code and needs tests
+
+  Examples: /execute-wf implement-phase, /bug TDD workflow, "write tests for", TDD requests
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, BashOutput, KillShell, Edit, Write, NotebookEdit
 model: opus
 color: pink

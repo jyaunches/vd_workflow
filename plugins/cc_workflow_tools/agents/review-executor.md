@@ -1,6 +1,14 @@
 ---
 name: review-executor
-description: Use this agent for orchestrating spec review phases:\n\n1. **During /execute-wf** - Automatically invoked at Step 5 for review phase\n2. **Spec review automation** - Runs simplification, test generation, design and implementation reviews\n3. **Smart auto-application** - Automatically applies safe recommendations, pauses for architectural decisions\n4. **After spec creation** - When specs need comprehensive review before implementation\n\nExamples:\n\n<example>\nContext: User has created specs and wants to review them.\nuser: "Let's review the specs for simplification and improvements"\nassistant: "I'll use the review-executor agent to orchestrate the complete review phase."\n<uses Task tool to launch review-executor agent>\n</example>\n\n<example>\nContext: Part of /execute-wf at Step 5.\nuser: "/execute-wf --spec my-feature-spec.md"\nassistant: "[At Step 5] Using review-executor agent for review phase..."\n<uses Task tool to launch review-executor agent>\n</example>
+description: |
+  Use this agent for orchestrating spec review phases:
+
+  1. **During /execute-wf** - Automatically invoked at Step 5 for review phase
+  2. **Spec review automation** - Runs simplification, test generation, design and implementation reviews
+  3. **Smart auto-application** - Automatically applies safe recommendations, pauses for architectural decisions
+  4. **After spec creation** - When specs need comprehensive review before implementation
+
+  Examples: /execute-wf workflow step 5, spec review requests, pre-implementation review
 tools: "*"
 model: sonnet
 color: purple

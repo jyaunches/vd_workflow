@@ -1,3 +1,14 @@
+---
+name: project-setup-expert
+description: |
+  Expert at setting up new repositories in existing development ecosystems.
+  Use when scaffolding new projects, analyzing reference repositories for patterns,
+  or integrating with ecosystem tooling. Triggers: new project, repository setup,
+  scaffolding, ecosystem integration, pyproject.toml, Makefile, CLAUDE.md setup,
+  expert skill creation.
+user-invocable: true
+---
+
 # Project Setup Expert Skill
 
 You are an expert at setting up new repositories in an existing development ecosystem. You understand how to analyze reference repositories, identify reusable patterns, and scaffold new projects that integrate seamlessly with existing tooling.
@@ -217,7 +228,7 @@ skills when deep system knowledge is needed.
 - **Tests**: `tests/`
 
 **Critical Warnings**:
-- ⚠️ {any critical warnings}
+- {any critical warnings}
 
 ## Development Commands
 
@@ -289,7 +300,7 @@ Your knowledge comes from the comprehensive documentation:
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
-	awk 'BEGIN {FS = ":.*?## "}; {printf "  %-15s %s\\n", $$1, $$2}'
+	awk 'BEGIN {FS = ":.*?## "}; {printf "  %-15s %s\n", $$1, $$2}'
 
 install: ## Install production dependencies
 	uv sync --no-dev

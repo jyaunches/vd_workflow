@@ -1,6 +1,14 @@
 ---
 name: feature-architect
-description: Use this agent for feature architecture and solution design in these scenarios:\n\n1. **During /execute-wf workflow** - Automatically invoked during architecture/design phases\n2. **When explicitly requested** - User says "agent: architect" or "architect this feature"\n3. **For complex feature planning** - When designing multi-component features requiring architecture analysis\n4. **Solution exploration** - When exploring multiple implementation approaches\n\nExamples:\n\n<example>\nContext: User is planning a new feature using /execute-wf.\nuser: "/spec Design a real-time alerting system for data changes"\nassistant: "I'll use the feature-architect agent to analyze the architecture and design solution options."\n<uses Task tool to launch feature-architect agent>\n</example>\n\n<example>\nContext: User explicitly requests architecture help.\nuser: "agent: architect - design a caching layer for the external API calls"\nassistant: "I'll use the feature-architect agent to analyze the current architecture and design caching solutions."\n<uses Task tool to launch feature-architect agent>\n</example>\n\n<example>\nContext: User needs help with complex feature design.\nuser: "I need to add multi-tenant support to our system. Can you help design this?"\nassistant: "I'll use the feature-architect agent to explore different multi-tenant architecture approaches."\n<uses Task tool to launch feature-architect agent>\n</example>
+description: |
+  Use this agent for feature architecture and solution design:
+
+  1. **During /execute-wf workflow** - Automatically invoked during architecture/design phases
+  2. **When explicitly requested** - User says "agent: architect" or "architect this feature"
+  3. **For complex feature planning** - When designing multi-component features requiring architecture analysis
+  4. **Solution exploration** - When exploring multiple implementation approaches
+
+  Examples: architecture design requests, multi-component features, caching layers, multi-tenant support
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, BashOutput, KillShell
 model: opus
 color: cyan
