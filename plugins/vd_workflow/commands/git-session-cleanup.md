@@ -22,7 +22,7 @@ Perform a comprehensive cleanup that includes:
      - **Bug fixes** or test fixes related to recent commits
      - **Refactoring** that improves code quality
      - **Temporary debug changes** that should be reverted
-     - **Configuration updates** (e.g., .beads files) that may be auto-generated
+     - **Configuration updates** that may be auto-generated
 
 ### Analysis Process:
 1. **Group related changes** by functionality or purpose

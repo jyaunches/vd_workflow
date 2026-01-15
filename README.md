@@ -100,6 +100,8 @@ flowchart LR
 
 The review phase verifies your spec against standards defined in `PATTERNS.md`:
 
+A description of what my PATTERNS.md drives for my planning workflow (these should be treated like a living document, getting refined overtime):
+
 | Step | What it verifies |
 |------|------------------|
 | **Simplify** | No over-engineering, YAGNI enforced |
@@ -241,7 +243,6 @@ rm -rf ~/.claude/plugins/cache/
 | `feature-writer` | Implements phases with TDD |
 | `feature-architect` | Analyzes architecture |
 | `tests-writer` | Generates test suites |
-| `validation-researcher` | Discovers validation tools |
 
 ### Skills
 

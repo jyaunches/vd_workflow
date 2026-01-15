@@ -35,7 +35,7 @@ vd_workflow/                    # Marketplace root
 `/vd_workflow:execute-wf <spec_file>` runs the full automated workflow:
 
 1. **Review Phase** (review-executor agent): Simplify spec → Generate test spec → Design review → Implementation review
-2. **Implementation Phase** (feature-writer agent): TDD phase-by-phase implementation with beads tracking
+2. **Implementation Phase** (feature-writer agent): TDD phase-by-phase implementation
 
 ### Manual Steps
 - `/vd_workflow:spec <name> "<description>"` - Create new specification (includes validation design Q&A)
@@ -46,14 +46,12 @@ vd_workflow/                    # Marketplace root
 Every `/spec` command now includes a validation design phase:
 
 1. **After spec creation**, `/design-validation` is automatically invoked
-2. **Q&A phase**: Asks about deployment type and proposes validation requirements
-3. **User confirms** validation requirements
-4. **Subagent researches** available tools (MCP servers, CLIs, SDKs)
-5. **Recommendations presented**: Use existing, install, or build custom tools
-6. **If building**: `/build-validation-tool` creates reusable tools in this plugin
-7. **Validation phase added** to the spec
+2. **Q&A phase**: Asks what needs validation and what tools are available
+3. **User provides** their validation tools (MCP servers, CLIs, test frameworks)
+4. **Validation steps designed** based on user input
+5. **Validation phase added** to the spec
 
-The `validation-expert` skill tracks known validation methods and learns from discoveries.
+The `validation-expert` skill provides guidance on validation patterns and tool usage.
 
 ## Agent Architecture
 
@@ -63,7 +61,6 @@ Agents are Tier 2 orchestrators that route to slash commands:
 - **feature-writer** (sonnet): Implements phases using git SHA markers for progress tracking
 - **tests-writer**: Generates test suites
 - **feature-architect**: Analyzes architecture and designs solutions
-- **validation-researcher** (sonnet): Discovers validation tools and recommends approaches (subagent)
 
 ## Skills
 

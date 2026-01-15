@@ -87,12 +87,6 @@ To find available MCP servers in current session:
 - **Supabase MCP**: Can query production database to verify state changes, get real data for tests
 - **GitHub MCP**: Can check workflow status, PR state without CLI
 
-### Built Validation Tools (vd_workflow)
-
-*This section is updated automatically when tools are built via `/build-validation-tool`*
-
-- None yet
-
 ### Project-Specific Discoveries
 
 *This section tracks tools discovered in specific projects for future reference*
