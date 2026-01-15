@@ -12,8 +12,9 @@ A Claude Code plugin for **verification-driven development**—define what "righ
 # 1. Install the plugin
 /plugin marketplace add jyaunches/vd_workflow
 
-# 2. Create your first spec
-/vd_workflow:spec my-feature "Brief description of the feature"
+# 2. Create your first spec (assumes your context window contains discussion about the feature, 
+# maybe even a plan file from plan mode, use the string argument to pass in any additional instructions)
+/vd_workflow:spec my-feature "Additional instructions for spec creation"
 ```
 
 ---
@@ -47,7 +48,7 @@ flowchart LR
 Creates a specification file with phases, acceptance criteria, and a validation strategy.
 
 ```bash
-/vd_workflow:spec feature-name "What this feature does"
+/vd_workflow:spec feature-name "Additional instructions for spec creation"
 ```
 
 **What happens:**
@@ -215,8 +216,7 @@ rm -rf ~/.claude/plugins/cache/
 ```
 /vd_workflow:
 ├── spec                    # Create specification
-│   ├── :design-validation  # Design E2E validation strategy
-│   └── :build-validation-tool  # Build custom validation tool
+│   └── :design-validation  # Design validation strategy
 │
 ├── execute-wf              # Run full workflow
 │   ├── :spec-simplify      # Simplify spec (YAGNI)

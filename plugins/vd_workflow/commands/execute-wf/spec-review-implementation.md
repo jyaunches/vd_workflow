@@ -69,8 +69,7 @@ This format provides a clean overview table followed by detailed breakdowns for 
 ### Auto-Apply Mode (`--auto-apply` flag)
 1. **Present Implementation Questions**: Show all findings with numbered sections (continuing from Phase 1 numbering)
 2. **Intelligent Recommendation Filtering**:
-   - **Auto-Apply**: Implementation decisions that follow best practices and existing patterns
-     - Pythonic/idiomatic implementations
+   - **Auto-Apply**: Implementation decisions aligned with `shared_docs/PATTERNS.md` (examples):
      - Existing implementation patterns in codebase
      - Simple and consistent approaches
      - Performance optimizations within existing architecture

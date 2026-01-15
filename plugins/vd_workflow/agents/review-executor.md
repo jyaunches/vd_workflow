@@ -187,27 +187,13 @@ The `/execute-wf:take-recommendations` command applies numbered sections from re
 
 ## Auto-Apply Decision Logic
 
-**Auto-Apply (no user approval needed):**
-- Removing YAGNI features and future-proofing
-- Removing premature abstractions
-- Simplifying tests and mock complexity
-- Removing config bloat
-- Following existing module patterns
-- Using Pythonic improvements (dataclasses, type hints)
-- Leveraging stdlib features
-- Using established libraries already in codebase
-- Simple and consistent implementation choices
-- Standard error handling patterns
+Each review command applies recommendations that align with `shared_docs/PATTERNS.md` automatically. Recommendations requiring user approval include:
+- Architectural changes (new patterns, structural reorganization)
+- Breaking changes (API modifications, removed functionality)
+- New dependencies (external libraries, services)
+- Pattern deviations (approaches not covered by PATTERNS.md)
 
-**Needs User Approval:**
-- Architectural changes or new module structures
-- Breaking API changes
-- New external dependencies not in codebase
-- Major refactoring of core abstractions
-- API design choices
-- Data structure decisions
-- Complexity vs simplicity tradeoffs
-- Technology/library choices
+See `shared_docs/PATTERNS.md` for the complete pattern guide.
 
 ## Error Handling
 
@@ -255,7 +241,7 @@ Task(
     - Generate comprehensive summary
     - Report git history of changes
 
-    The reviewed specs will then be used to create beads for implementation.
+    The reviewed specs will then be implemented by the feature-writer agent.
     """
 )
 ```
@@ -263,7 +249,7 @@ Task(
 ## Key Design Principles
 
 - **Tier 2 Agent**: Routes to slash commands, doesn't duplicate their procedures
-- **Git-Driven**: Uses git history for change tracking, not bead notes
+- **Git-Driven**: Uses git history for change tracking
 - **Intelligent Filtering**: Auto-applies safe recommendations, pauses for architectural decisions
 - **Summary-Focused**: Provides clear summary of what was changed
 - **User Visibility**: User sees all intermediate commands executing
