@@ -161,34 +161,6 @@ At each phase, Claude will provide:
 - **Clean History**: Separates test and implementation in git history
 - **TDD Practice**: Follows red-green-refactor cycle with deliberate pacing
 
-## Beads Issue Tracking (Auto Mode)
-
-When using beads commands during automated bug fixes, always use these flags for non-interactive execution:
-
-- **Use `--json` flag** on all beads commands for machine-readable output
-- **Use `--force` flag** for destructive operations like `bd delete`
-- **Environment**: `BD_ACTOR` is set to "claude-code" for automated tracking
-
-Examples:
-```bash
-# Check ready work
-bd ready --json
-
-# Create new issue
-bd create "Fix bug: [description]" -t bug -p 1 --json
-
-# Update issue status
-bd update bd-42 --status in_progress --json
-
-# Close completed issue
-bd close bd-42 --reason "Bug fixed" --json
-
-# Delete issue (requires --force)
-bd delete bd-42 --force --json
-```
-
-**Important**: Always use `--json` flag to prevent interactive prompts that would cause the command to hang when run with `--dangerously-skip-permissions`.
-
 ## Notes
 
 - The test should be minimal and focused on the specific bug

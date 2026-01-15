@@ -127,34 +127,6 @@ Following the project's integration philosophy:
 - **Use uv for dependencies** (never pip install)
 - **Maintain type annotations** and dataclass patterns
 
-## Beads Issue Tracking (Non-Interactive Mode)
-
-When using beads commands during implementation, always use these flags for non-interactive execution:
-
-- **Use `--json` flag** on all beads commands for machine-readable output
-- **Use `--force` flag** for destructive operations like `bd delete`
-- **Environment**: `BD_ACTOR` is set to "claude-code" for automated tracking
-
-Examples:
-```bash
-# Check ready work
-bd ready --json
-
-# Create new issue
-bd create "Implement phase X" -t task -p 1 --json
-
-# Update issue status
-bd update bd-42 --status in_progress --json
-
-# Close completed issue
-bd close bd-42 --reason "Phase completed" --json
-
-# Delete issue (requires --force)
-bd delete bd-42 --force --json
-```
-
-**Important**: Always use `--json` flag to prevent interactive prompts that would cause the command to hang when run with `--dangerously-skip-permissions`.
-
 ## Phase Analysis & Approval Process
 
 **INTERACTIVE MODE (default):**

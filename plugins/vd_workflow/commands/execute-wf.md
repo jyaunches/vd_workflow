@@ -20,8 +20,8 @@ The workflow executes in two independent phases:
 4. Implementation Review - Review implementation decisions and clarity
 
 **Phase 2: Implementation (feature-writer agent)**
-5. Implement Phases - TDD-based phase implementation (tracked with beads)
-6. Validation - Run tests and validate acceptance criteria (tracked with beads)
+5. Implement Phases - TDD-based phase implementation (tracked via git SHA markers in spec)
+6. Validation - Run tests and validate acceptance criteria
 
 **Intelligent Recommendation Filtering**: Review phase automatically applies recommendations that align with `shared_docs/PATTERNS.md` and existing architecture, but pauses for user approval on architectural changes, breaking changes, or new dependencies.
 
@@ -34,11 +34,6 @@ Let me begin the automated workflow execution:
 ### Step 1: Check Prerequisites
 
 First, verify all prerequisites are met:
-
-```bash
-# Check beads is initialized
-ls -la .beads/ 2>/dev/null || echo "BEADS_NOT_INITIALIZED"
-```
 
 ```bash
 # Check specs directory exists
@@ -64,12 +59,7 @@ Extract:
 
 If `EXTRA_INSTRUCTIONS` is provided, it will be passed to both review-executor and feature-writer agents to influence their execution.
 
-### Step 3: Initialize Beads (if needed)
-
-If `.beads/` directory doesn't exist:
-- Use `mcp__beads__init` to initialize beads in workspace
-
-### Step 4: Execute Review Phase
+### Step 3: Execute Review Phase
 
 Invoke the review-executor agent to execute the review phase.
 
@@ -120,38 +110,7 @@ The test spec file path will be derived from spec filename: tests_<spec_file_nam
 
 **Wait for review phase to complete and return summary.**
 
-### Step 5: Parse Reviewed Specs for Phases
-
-Read the final reviewed spec file and extract all phase headers:
-
-```bash
-grep -E "^#+\s+Phase\s+[0-9]+:" "$SPEC_FILE"
-```
-
-Count the phases found for bead creation.
-
-### Step 6: Create Beads for Implementation
-
-Use beads to create the workflow tracking structure:
-
-**IMPORTANT**: Do NOT specify `id` parameter when creating tasks - let beads auto-generate IDs with the correct prefix.
-
-1. Create epic: "Feature: [feature_name]" (extracted from spec filename)
-   - Use `mcp__beads__create` with `issue_type="epic"`, `title="Feature: [feature_name]"`, `description="..."`, `priority=1`
-   - Do NOT include `id` parameter - beads will auto-generate with correct prefix
-   - Store the epic ID for linking tasks
-
-2. Create tasks for each phase found:
-   - For each phase N: "Phase N: [phase_name]" (task, priority 1)
-   - "Validation - check-work" (task, priority 1)
-   - For each task: use `mcp__beads__create` WITHOUT `id` parameter
-
-3. Set up dependencies:
-   - Phase 1 blocks Phase 2
-   - Phase N blocks Phase N+1
-   - Last Phase blocks Validation
-
-### Step 7: Execute Implementation Phase
+### Step 4: Execute Implementation Phase
 
 Invoke the feature-writer agent to implement the phases.
 
@@ -164,41 +123,41 @@ Use the Task tool to invoke feature-writer:
 - **prompt**:
 ```
 Implement feature from spec: $SPEC_FILE
+Test spec: <test_spec_file>
 
-Beads tasks are ready. Process them sequentially:
-- "Phase N: ..." → /execute-wf:implement-phase $SPEC_FILE <test_spec_file> --auto
-- "Validation" → /execute-wf:check-work $SPEC_FILE <test_spec_file>
+Process phases sequentially by parsing the spec file:
+1. Find phases without [COMPLETED:] markers
+2. Execute /execute-wf:implement-phase $SPEC_FILE <test_spec_file> --auto for each
+3. When all phases complete, run /execute-wf:check-work $SPEC_FILE <test_spec_file>
 
-When done, close the epic and output summary.
+Phase completion is tracked via [COMPLETED: git-sha] markers in the spec file.
 ```
 
 **Feature-writer agent will:**
-- Query beads for ready tasks
-- Execute `/execute-wf:implement-phase` for each phase
-- Execute `/execute-wf:check-work` for validation
-- Update beads task status throughout
+- Parse spec file to find incomplete phases (those without `[COMPLETED:]`)
+- Execute `/execute-wf:implement-phase` for each phase in order
+- Execute `/execute-wf:check-work` for validation after all phases complete
 - Generate completion summary
 
 ---
 
 ## Two-Phase Architecture Benefits
 
-**Phase 1: Review (No Beads)**
+**Phase 1: Review**
 - Reviews and refines the specs
 - Git history tracks all review decisions
-- No beads overhead for review tasks
 - Clean separation: spec refinement
 
-**Phase 2: Implementation (With Beads)**
-- Creates beads from reviewed specs
-- Beads track implementation progress
+**Phase 2: Implementation**
+- Implements phases from reviewed specs
+- Git SHA markers track phase completion in spec file
 - Clean separation: feature building
 
 **Why This Works:**
 - Reviewed specs become the "contract" between phases
 - No context needed from review phase to implementation phase
 - Each phase is independently trackable
-- Git history for review decisions, beads for implementation progress
+- Git history + `[COMPLETED: sha]` markers provide full traceability
 
 ## Workflow State
 
@@ -208,10 +167,8 @@ Track progress using:
 - `git log --oneline -N` - See review changes
 
 **During Implementation Phase:**
-- `bd ready` - Show tasks ready to execute
-- `bd list --status in_progress` - Show current tasks
-- `bd list --status closed` - Show completed tasks
-- `bd blocked` - Show blocked tasks
+- `grep "\[COMPLETED:" spec.md` - See completed phases
+- `git log --oneline -N` - See implementation commits
 
 ---
 

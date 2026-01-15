@@ -108,4 +108,3 @@ Categories for untracked files:
 - Suggest atomic commits that group related changes
 - For markdown files, offer to read and summarize key findings before deletion
 - Always preserve functional improvements and test fixes with proper commit messages
-- Auto-generated files (.beads/daemon.pid) can usually be ignored or reverted
