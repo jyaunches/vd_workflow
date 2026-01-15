@@ -1,0 +1,8 @@
+{
+  "name": "vd_workflow",
+  "version": "1.3.0",
+  "description": "Verification-driven development workflow with TDD - generic commands and agents for any project",
+  "author": {
+    "name": "jyaunches"
+  }
+}

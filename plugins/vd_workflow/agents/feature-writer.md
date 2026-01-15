@@ -211,4 +211,4 @@ This agent relies on:
 
 ---
 
-*Part of the cc_workflow_tools plugin.*
+*Part of the vd_workflow plugin.*

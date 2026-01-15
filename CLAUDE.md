@@ -4,16 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a Claude Code plugin (`cc_workflow_tools`) that provides spec-driven development workflow commands and agents. It implements a structured approach to feature development: Spec Creation → Spec Review → TDD Implementation → Validation.
+This is a Claude Code plugin (`vd_workflow`) that provides spec-driven development workflow commands and agents. It implements a structured approach to feature development: Spec Creation → Spec Review → TDD Implementation → Validation.
 
 ## Repository Structure (Marketplace Layout)
 
 ```
-cc_workflow_tools/                    # Marketplace root
+vd_workflow/                    # Marketplace root
 ├── .claude-plugin/
 │   └── marketplace.json              # Marketplace manifest
 ├── plugins/
-│   └── cc_workflow_tools/            # Plugin directory
+│   └── vd_workflow/            # Plugin directory
 │       ├── .claude-plugin/
 │       │   └── plugin.json           # Plugin manifest
 │       ├── commands/                 # Slash commands
@@ -32,14 +32,14 @@ cc_workflow_tools/                    # Marketplace root
 ## Key Workflows
 
 ### Complete Feature Workflow
-`/cc_workflow_tools:execute-wf <spec_file>` runs the full automated workflow:
+`/vd_workflow:execute-wf <spec_file>` runs the full automated workflow:
 
 1. **Review Phase** (review-executor agent): Simplify spec → Generate test spec → Design review → Implementation review
 2. **Implementation Phase** (feature-writer agent): TDD phase-by-phase implementation with beads tracking
 
 ### Manual Steps
-- `/cc_workflow_tools:spec <name> "<description>"` - Create new specification (includes validation design Q&A)
-- `/cc_workflow_tools:execute-wf:implement-phase <spec> <test_spec> [--auto]` - Execute implementation phases
+- `/vd_workflow:spec <name> "<description>"` - Create new specification (includes validation design Q&A)
+- `/vd_workflow:execute-wf:implement-phase <spec> <test_spec> [--auto]` - Execute implementation phases
 
 ### Validation Design Workflow
 
@@ -87,7 +87,7 @@ All specs must include a final "Clean the House" phase for post-implementation c
 When this plugin is used in a project, it expects:
 - `specs/` directory - Where specifications are stored
 
-Run `/cc_workflow_tools:init` to create this.
+Run `/vd_workflow:init` to create this.
 
 The plugin includes `shared_docs/PATTERNS.md` which defines patterns for auto-apply decisions during spec reviews.
 
@@ -107,7 +107,7 @@ Ecosystem mode is useful when:
 
 To scaffold a new repository with full ecosystem integration:
 
-`/cc_workflow_tools:setup-project [--reference <repo_path>]`
+`/vd_workflow:setup-project [--reference <repo_path>]`
 
 This Q&A-driven command will:
 1. **Analyze a reference repository** to extract plugin config, symlinks, and patterns

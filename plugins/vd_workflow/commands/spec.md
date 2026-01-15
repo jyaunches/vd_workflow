@@ -7,7 +7,7 @@ argument-hint: <feature_name> "<description>"
 
 Create a new specification file for the project.
 
-**Usage**: `/cc_workflow_tools:spec <feature_name> "<brief_description>"`
+**Usage**: `/vd_workflow:spec <feature_name> "<brief_description>"`
 
 ## Create New Specification: $ARGUMENTS
 
@@ -134,7 +134,7 @@ I'll create the specification file in `specs/` following the naming convention: 
 After creating the specification file, I'll invoke the validation design command to help you define how to validate this feature works correctly:
 
 ```bash
-/cc_workflow_tools:spec:design-validation <spec_file_path>
+/vd_workflow:spec:design-validation <spec_file_path>
 ```
 
 This Q&A-driven phase will:

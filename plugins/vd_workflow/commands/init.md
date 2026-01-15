@@ -4,7 +4,7 @@ description: Initialize project with specs/ directory and optional ecosystem mod
 
 # Initialize Project for Workflow Tools
 
-Set up this project with the starter files needed for the cc_workflow_tools workflow.
+Set up this project with the starter files needed for the vd_workflow workflow.
 
 ## Step 1: Check What's Missing
 
@@ -133,4 +133,4 @@ After running this command, you should have:
 - `.claude/skills/{project}_expert.md` - Expert knowledge for this repo
 - `~/.claude/ecosystem-config.json` - Registry of your ecosystems
 
-The workflow commands (`/cc_workflow_tools:execute-wf`, etc.) use the plugin's `shared_docs/PATTERNS.md` to guide auto-apply decisions.
+The workflow commands (`/vd_workflow:execute-wf`, etc.) use the plugin's `shared_docs/PATTERNS.md` to guide auto-apply decisions.

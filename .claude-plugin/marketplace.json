@@ -1,14 +1,14 @@
 {
-  "name": "cc_workflow_tools",
+  "name": "vd_workflow",
   "owner": {
     "name": "jyaunches"
   },
-  "description": "Generic spec-driven development workflow with TDD methodology",
+  "description": "Verification-driven development workflow with TDD methodology",
   "plugins": [
     {
-      "name": "cc_workflow_tools",
-      "source": "./plugins/cc_workflow_tools",
-      "description": "Spec-driven development workflow commands, agents, and skills"
+      "name": "vd_workflow",
+      "source": "./plugins/vd_workflow",
+      "description": "Verification-driven development workflow commands, agents, and skills"
     }
   ]
 }

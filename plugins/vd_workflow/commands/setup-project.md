@@ -503,8 +503,8 @@ Verification:
 
 Next Steps:
   1. cd {project_name}
-  2. Create specification: /cc_workflow_tools:spec
-  3. Implement phases: /cc_workflow_tools:execute-wf:implement-phase
+  2. Create specification: /vd_workflow:spec
+  3. Implement phases: /vd_workflow:execute-wf:implement-phase
 ```
 
 ## Error Handling
@@ -521,4 +521,4 @@ If any step fails:
 - Use `--reference` to ensure consistency with existing projects
 - The reference repository doesn't need to be the same project type
 - Symlinks only work if the target directories exist
-- After setup, use `/cc_workflow_tools:spec` to create your first specification
+- After setup, use `/vd_workflow:spec` to create your first specification

@@ -191,12 +191,12 @@ I'll present the validation-researcher's findings:
 If you select "Build Custom" for any requirement and approve the design:
 
 ```bash
-# Build the validation tool in cc_workflow_tools
-/cc_workflow_tools:spec:build-validation-tool "<tool_name>" "<description>"
+# Build the validation tool in vd_workflow
+/vd_workflow:spec:build-validation-tool "<tool_name>" "<description>"
 ```
 
 This will:
-1. Create a spec for the tool in cc_workflow_tools
+1. Create a spec for the tool in vd_workflow
 2. Run the execute-workflow to implement it
 3. Update the validation-expert skill with the new tool
 4. Return here to continue

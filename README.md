@@ -1,4 +1,4 @@
-# cc_workflow_tools
+# vd_workflow
 
 A Claude Code plugin providing spec-driven development workflow with TDD methodology.
 
@@ -19,10 +19,10 @@ Add the marketplace and install in one step:
 
 ```bash
 # Add marketplace from GitHub
-/plugin marketplace add yourorg/cc_workflow_tools
+/plugin marketplace add yourorg/vd_workflow
 
 # Install the plugin
-/plugin install cc_workflow_tools@cc_workflow_tools
+/plugin install vd_workflow@vd_workflow
 ```
 
 Or configure in `.claude/settings.json`:
@@ -30,15 +30,15 @@ Or configure in `.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "cc_workflow_tools": {
+    "vd_workflow": {
       "source": {
         "source": "github",
-        "repo": "yourorg/cc_workflow_tools"
+        "repo": "yourorg/vd_workflow"
       }
     }
   },
   "enabledPlugins": {
-    "cc_workflow_tools@cc_workflow_tools": true
+    "vd_workflow@vd_workflow": true
   }
 }
 ```
@@ -49,7 +49,7 @@ Clone the repository to your development environment:
 
 ```bash
 cd ~/Development
-git clone git@github.com:yourorg/cc_workflow_tools.git
+git clone git@github.com:yourorg/vd_workflow.git
 ```
 
 Then add to your project's `.claude/settings.json`:
@@ -57,15 +57,15 @@ Then add to your project's `.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "cc_workflow_tools": {
+    "vd_workflow": {
       "source": {
         "source": "directory",
-        "path": "~/Development/cc_workflow_tools"
+        "path": "~/Development/vd_workflow"
       }
     }
   },
   "enabledPlugins": {
-    "cc_workflow_tools@cc_workflow_tools": true
+    "vd_workflow@vd_workflow": true
   }
 }
 ```
@@ -73,8 +73,8 @@ Then add to your project's `.claude/settings.json`:
 Or use the interactive command:
 
 ```bash
-/plugin marketplace add ~/Development/cc_workflow_tools
-/plugin install cc_workflow_tools@cc_workflow_tools
+/plugin marketplace add ~/Development/vd_workflow
+/plugin install vd_workflow@vd_workflow
 ```
 
 ### Option 3: Specific Branch or Tag
@@ -82,8 +82,8 @@ Or use the interactive command:
 Reference a specific version:
 
 ```bash
-/plugin marketplace add yourorg/cc_workflow_tools#v1.0.0
-/plugin marketplace add yourorg/cc_workflow_tools#main
+/plugin marketplace add yourorg/vd_workflow#v1.0.0
+/plugin marketplace add yourorg/vd_workflow#main
 ```
 
 ## Plugin Cache
@@ -100,7 +100,7 @@ rm -rf ~/.claude/plugins/cache/
 After installing, initialize your project:
 
 ```bash
-/cc_workflow_tools:init
+/vd_workflow:init
 ```
 
 This creates:
@@ -114,7 +114,7 @@ For multi-repository environments, `/init` offers ecosystem mode which enables c
 
 ```bash
 # When prompted during init, choose "Yes" for ecosystem mode
-/cc_workflow_tools:init
+/vd_workflow:init
 ```
 
 This creates:
@@ -125,7 +125,7 @@ With ecosystem mode, you can use the `cross-repo-researcher` agent to investigat
 
 ## Commands
 
-### Feature Workflow (`/cc_workflow_tools:spec`, `/cc_workflow_tools:execute-wf`)
+### Feature Workflow (`/vd_workflow:spec`, `/vd_workflow:execute-wf`)
 
 | Command | Description |
 |---------|-------------|
@@ -170,13 +170,13 @@ With ecosystem mode, you can use the `cross-repo-researcher` agent to investigat
 
 ```bash
 # Create a spec for a new feature
-/cc_workflow_tools:spec "Add user authentication"
+/vd_workflow:spec "Add user authentication"
 
 # Run the complete workflow
-/cc_workflow_tools:execute-wf specs/user-auth.md
+/vd_workflow:execute-wf specs/user-auth.md
 
 # Scaffold a new project with ecosystem integration
-/cc_workflow_tools:setup-project --reference ../existing_project
+/vd_workflow:setup-project --reference ../existing_project
 ```
 
 ## Key Principles

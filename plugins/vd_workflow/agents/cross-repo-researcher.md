@@ -192,7 +192,7 @@ done
 ## Error Handling
 
 If you encounter issues:
-- **No ecosystem config**: Ask user to run `/cc_workflow_tools:init` with ecosystem mode
+- **No ecosystem config**: Ask user to run `/vd_workflow:init` with ecosystem mode
 - **Skill missing**: Use systematic codebase exploration with grep/glob/read
 - **Repository unclear**: Ask user to clarify which service interactions to investigate
 - **Complex dependencies**: Break down investigation into smaller, focused research tasks

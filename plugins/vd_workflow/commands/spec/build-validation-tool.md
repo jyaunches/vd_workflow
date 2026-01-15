@@ -1,11 +1,11 @@
 ---
-description: Build a validation tool in cc_workflow_tools using recursive spec/execute workflow
+description: Build a validation tool in vd_workflow using recursive spec/execute workflow
 argument-hint: <tool_name> "<description>"
 ---
 
 # Build Validation Tool: $ARGUMENTS
 
-Build a reusable validation tool in the cc_workflow_tools plugin repository.
+Build a reusable validation tool in the vd_workflow plugin repository.
 
 ## Overview
 
@@ -32,7 +32,7 @@ echo "  Description: $DESCRIPTION"
 
 ## Step 2: Switch to Plugin Directory
 
-The tool will be built in the cc_workflow_tools plugin directory so it's available to all projects:
+The tool will be built in the vd_workflow plugin directory so it's available to all projects:
 
 ```bash
 PLUGIN_DIR="${CLAUDE_PLUGIN_ROOT}"
@@ -79,7 +79,7 @@ The specification will include:
 Run the spec command to create the full specification:
 
 ```bash
-/cc_workflow_tools:spec "$TOOL_NAME" "$DESCRIPTION"
+/vd_workflow:spec "$TOOL_NAME" "$DESCRIPTION"
 ```
 
 ---
@@ -89,7 +89,7 @@ Run the spec command to create the full specification:
 After the spec is created, implement the tool:
 
 ```bash
-/cc_workflow_tools:execute-wf "$SPEC_FILE"
+/vd_workflow:execute-wf "$SPEC_FILE"
 ```
 
 This will:
@@ -115,7 +115,7 @@ Add entry to the "Built Validation Tools" section:
 
 ```markdown
 - **$TOOL_NAME**: $DESCRIPTION
-  - Location: cc_workflow_tools (available via plugin)
+  - Location: vd_workflow (available via plugin)
   - Usage: [usage instructions from implementation]
   - Built: $TODAY
   - Spec: $SPEC_FILE
@@ -144,7 +144,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 ## Validation Tool Built Successfully
 
 **Tool**: $TOOL_NAME
-**Location**: cc_workflow_tools plugin
+**Location**: vd_workflow plugin
 **Specification**: $SPEC_FILE
 
 **The tool is now available for use in validation phases.**
@@ -181,7 +181,7 @@ To use this tool in future specs:
 
 ## Notes
 
-- All validation tools go into cc_workflow_tools to be reusable across projects
+- All validation tools go into vd_workflow to be reusable across projects
 - Tools follow the plugin's command/agent patterns
 - The validation-expert skill is the single source of truth for available tools
 - Built tools are automatically available to the validation-researcher agent

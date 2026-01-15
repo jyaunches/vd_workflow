@@ -56,7 +56,7 @@ When given a reference repository path, analyze:
 └── skills/                → Expert skills pattern
 ```
 
-Note: PATTERNS.md now lives in the cc_workflow_tools plugin at `shared_docs/PATTERNS.md`.
+Note: PATTERNS.md now lives in the vd_workflow plugin at `shared_docs/PATTERNS.md`.
 
 **Key Questions to Answer:**
 - What plugin marketplaces are configured?

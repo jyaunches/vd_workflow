@@ -42,10 +42,10 @@ ls -la .beads/ 2>/dev/null || echo "BEADS_NOT_INITIALIZED"
 
 ```bash
 # Check specs directory exists
-[ -d "specs" ] && echo "specs/: FOUND" || echo "specs/: NOT FOUND - run /cc_workflow_tools:init"
+[ -d "specs" ] && echo "specs/: FOUND" || echo "specs/: NOT FOUND - run /vd_workflow:init"
 ```
 
-**Note**: The `review-executor` and `feature-writer` agents are provided by the cc_workflow_tools plugin. No local agent files are required.
+**Note**: The `review-executor` and `feature-writer` agents are provided by the vd_workflow plugin. No local agent files are required.
 
 ### Step 2: Extract Spec File Path and Extra Instructions
 
