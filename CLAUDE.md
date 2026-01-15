@@ -60,16 +60,14 @@ The `validation-expert` skill tracks known validation methods and learns from di
 Agents are Tier 2 orchestrators that route to slash commands:
 - **spec-writer** (opus): Creates technical specifications
 - **review-executor** (sonnet): Orchestrates spec review phase
-- **feature-writer** (sonnet): Implements phases using beads for progress tracking
+- **feature-writer** (sonnet): Implements phases using git SHA markers for progress tracking
 - **tests-writer**: Generates test suites
 - **feature-architect**: Analyzes architecture and designs solutions
 - **validation-researcher** (sonnet): Discovers validation tools and recommends approaches (subagent)
-- **cross-repo-researcher** (sonnet): Investigates across repositories in an ecosystem (requires ecosystem mode)
 
 ## Skills
 
 Skills provide domain expertise:
-- **project-setup-expert**: Repository scaffolding and ecosystem integration
 - **validation-expert**: Validation tool catalog and deployment-specific patterns
 
 ## Specification Format Requirements
@@ -82,42 +80,7 @@ Phase headers must follow this exact format for `/implement-phase` compatibility
 
 All specs must include a final "Clean the House" phase for post-implementation cleanup.
 
-## Project Setup
-
-When this plugin is used in a project, it expects:
-- `specs/` directory - Where specifications are stored
-
-Run `/vd_workflow:init` to create this.
-
 The plugin includes `shared_docs/PATTERNS.md` which defines patterns for auto-apply decisions during spec reviews.
-
-### Ecosystem Mode (Optional)
-
-For multi-repository environments, `/init` offers optional ecosystem mode which enables:
-- `.claude/skills/{project}_expert.md` - Deep repository knowledge for cross-repo research
-- `~/.claude/ecosystem-config.json` - Registry of ecosystems and their base paths
-- **cross-repo-researcher** agent - Investigate how things work across related repositories
-
-Ecosystem mode is useful when:
-- Working with multiple related services/repositories
-- Debugging cross-service issues
-- Designing features that integrate with other repositories
-
-### New Repository Setup
-
-To scaffold a new repository with full ecosystem integration:
-
-`/vd_workflow:setup-project [--reference <repo_path>]`
-
-This Q&A-driven command will:
-1. **Analyze a reference repository** to extract plugin config, symlinks, and patterns
-2. **Ask questions** about project type, dependencies, and deployment
-3. **Generate scaffolding** with appropriate files and ecosystem integration
-4. **Set up symlinks** for shared commands and documentation
-5. **Create expert skill** for the new repository
-6. **Initialize git** with a proper initial commit
-
-The `project-setup-expert` skill provides detailed guidance on repository analysis and scaffolding patterns.
 
 ## Plugin Cache Management
 

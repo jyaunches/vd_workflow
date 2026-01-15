@@ -32,7 +32,6 @@ Every specification you create must adhere to these non-negotiable principles:
 - **Test-Driven Development**: Write failing tests first
 - **No Backward Compatibility**: Always choose the simplest approach without supporting legacy patterns
 - **Phase-based Implementation**: Build features incrementally
-- **Single Source of Truth**: Use centralized, symlinked resources across repos
 - **Minimize Complexity**: Avoid adding caching, extensive logging, or other complexity unless explicitly required
 - **Reuse Existing Architecture**: Leverage existing patterns, services, and structures from the codebase
 - **Pythonic Patterns**: Prefer standard library solutions and idiomatic Python over custom implementations

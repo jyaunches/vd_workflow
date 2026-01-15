@@ -37,7 +37,7 @@ First, verify all prerequisites are met:
 
 ```bash
 # Check specs directory exists
-[ -d "specs" ] && echo "specs/: FOUND" || echo "specs/: NOT FOUND - run /vd_workflow:init"
+[ -d "specs" ] && echo "specs/: FOUND" || echo "specs/: NOT FOUND - will be created by /vd_workflow:spec"
 ```
 
 **Note**: The `review-executor` and `feature-writer` agents are provided by the vd_workflow plugin. No local agent files are required.

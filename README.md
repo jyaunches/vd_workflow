@@ -1,31 +1,155 @@
 # vd_workflow
 
-A Claude Code plugin providing spec-driven development workflow with TDD methodology.
+A Claude Code plugin for **verification-driven development**—define what "right" looks like, let the agent iterate until criteria are met.
 
-## Overview
+> This plugin implements the workflows described in [Verification-Driven Agentic Coding](https://jyaunches.github.io/blog/practical-agentic-coding). Read that article for the full philosophy; this README covers practical usage.
 
-This plugin provides generic workflow commands and agents for any software project. It implements a structured approach to feature development:
+---
 
-1. **Spec Creation** - Write technical specifications
-2. **Spec Review** - Simplify, generate tests, review design/implementation
-3. **Implementation** - TDD-based phase-by-phase development
-4. **Validation** - Verify acceptance criteria
+## Quick Start
+
+```bash
+# 1. Install the plugin
+/plugin marketplace add jyaunches/vd_workflow
+
+# 2. Create your first spec
+/vd_workflow:spec my-feature "Brief description of the feature"
+```
+
+---
+
+## The Two Core Workflows
+
+This plugin provides two main commands that encode the verification-driven approach:
+
+```mermaid
+flowchart LR
+    subgraph Planning["Planning"]
+        P["Develop plan with agent"]
+    end
+
+    subgraph Spec["/spec"]
+        S["Structure into phases<br/>Design validation"]
+    end
+
+    subgraph Execute["/execute-wf"]
+        R["Review"] --> I["Implement"]
+    end
+
+    Planning --> Spec --> Execute --> Done(["Feature Complete"])
+
+    style Spec fill:#0C5DF2,color:#ffffff
+    style Execute fill:#0C5DF2,color:#ffffff
+```
+
+### `/spec` — Plan and Structure
+
+Creates a specification file with phases, acceptance criteria, and a validation strategy.
+
+```bash
+/vd_workflow:spec feature-name "What this feature does"
+```
+
+**What happens:**
+1. Analyzes your codebase structure
+2. Generates a spec file in `specs/` with:
+   - Overview & objectives
+   - Current state analysis
+   - Architecture design (conceptual, no code)
+   - Implementation phases with acceptance criteria
+   - "Clean the House" phase for documentation
+3. Runs validation design Q&A to plan E2E verification
+
+**Output:** `specs/YYYY-MM-DD_HH-mm_feature-name.md`
+
+---
+
+### `/execute-wf` — Review and Implement
+
+Takes a spec file and executes the full workflow: review, then implement.
+
+```bash
+/vd_workflow:execute-wf specs/my-feature.md
+```
+
+**What happens:**
+
+```mermaid
+flowchart LR
+    subgraph Review["Review Phase"]
+        direction LR
+        A["Simplify"] --> B["Generate Tests"] --> C["Review Design"] --> D["Review Implementation"]
+    end
+
+    subgraph Implement["Implementation Phase"]
+        direction LR
+        T["Write Tests"] --> I["Implement"] --> Co["Commit"]
+    end
+
+    Review --> Implement
+    Co -->|"Mark phase complete"| Check{"More?"}
+    Check -->|Yes| T
+    Check -->|No| Val["Validation"]
+
+    style Review fill:#e8ecf1,color:#2A2F36
+    style Implement fill:#0C5DF2,color:#ffffff
+```
+
+#### Review Phase (automatic)
+
+The review phase verifies your spec against standards defined in `PATTERNS.md`:
+
+| Step | What it verifies |
+|------|------------------|
+| **Simplify** | No over-engineering, YAGNI enforced |
+| **Generate Tests** | Creates test spec file |
+| **Review Design** | Alignment with codebase patterns |
+| **Review Implementation** | Clarity, completeness, feasibility |
+
+Safe changes are auto-applied; architectural decisions pause for your approval.
+
+#### Implementation Phase (TDD loop)
+
+For each phase in the spec:
+1. Write failing tests (verification criteria)
+2. Implement until tests pass
+3. Commit with `[COMPLETED: git-sha]` marker in spec
+
+The git SHA serves as a checkpoint—if context resets, the agent resumes from the last completed phase.
+
+---
+
+## Customizing Verification Criteria
+
+The plugin includes `shared_docs/PATTERNS.md` which encodes what gets verified during review. Default criteria:
+
+- **Simplicity** — No speculative abstractions
+- **Architectural consistency** — Follow existing patterns
+- **Test coverage** — Unit tests for each phase
+- **No backward compatibility hacks** — Direct integration
+- **Clean documentation** — Keep README/CLAUDE.md current
+
+Edit `PATTERNS.md` to tune verification to your team's standards. See the [blog article appendix](https://jyaunches.github.io/blog/practical-agentic-coding#appendix-tuning-your-verification-criteria) for examples.
+
+---
+
+## Utility Commands
+
+These commands support the workflow but aren't the core workflow themselves.
+
+| Command | Purpose |
+|---------|---------|
+| `/vd_workflow:bug` | Fix a bug using TDD methodology |
+| `/vd_workflow:fix-tests` | Run tests and fix failures |
+| `/vd_workflow:git-session-cleanup` | Clean up temporary files from a session |
+
+---
 
 ## Installation
 
-### Option 1: GitHub Marketplace (Recommended for New Environments)
+### From GitHub (Recommended)
 
-Add the marketplace and install in one step:
-
-```bash
-# Add marketplace from GitHub
-/plugin marketplace add yourorg/vd_workflow
-
-# Install the plugin
-/plugin install vd_workflow@vd_workflow
-```
-
-Or configure in `.claude/settings.json`:
+Add to your project's `.claude/settings.json`:
 
 ```json
 {
@@ -33,7 +157,7 @@ Or configure in `.claude/settings.json`:
     "vd_workflow": {
       "source": {
         "source": "github",
-        "repo": "yourorg/vd_workflow"
+        "repo": "jyaunches/vd_workflow"
       }
     }
   },
@@ -43,16 +167,19 @@ Or configure in `.claude/settings.json`:
 }
 ```
 
-### Option 2: Local Clone (For Development)
-
-Clone the repository to your development environment:
+Or via CLI:
 
 ```bash
-cd ~/Development
-git clone git@github.com:yourorg/vd_workflow.git
+/plugin marketplace add jyaunches/vd_workflow
 ```
 
-Then add to your project's `.claude/settings.json`:
+### Local Development
+
+```bash
+git clone git@github.com:jyaunches/vd_workflow.git ~/Development/vd_workflow
+```
+
+Then in your project's `.claude/settings.json`:
 
 ```json
 {
@@ -70,121 +197,60 @@ Then add to your project's `.claude/settings.json`:
 }
 ```
 
-Or use the interactive command:
+### Updating
 
-```bash
-/plugin marketplace add ~/Development/vd_workflow
-/plugin install vd_workflow@vd_workflow
-```
-
-### Option 3: Specific Branch or Tag
-
-Reference a specific version:
-
-```bash
-/plugin marketplace add yourorg/vd_workflow#v1.0.0
-/plugin marketplace add yourorg/vd_workflow#main
-```
-
-## Plugin Cache
-
-When the plugin is updated, Claude Code doesn't automatically pick up changes due to caching. To refresh:
+Plugin updates require cache clearing:
 
 ```bash
 rm -rf ~/.claude/plugins/cache/
-# Then restart Claude Code sessions
+# Restart Claude Code
 ```
 
-## Project Setup
+---
 
-After installing, initialize your project:
+## Reference
 
-```bash
-/vd_workflow:init
+### Command Hierarchy
+
+```
+/vd_workflow:
+├── spec                    # Create specification
+│   ├── :design-validation  # Design E2E validation strategy
+│   └── :build-validation-tool  # Build custom validation tool
+│
+├── execute-wf              # Run full workflow
+│   ├── :spec-simplify      # Simplify spec (YAGNI)
+│   ├── :spec-tests         # Generate test spec
+│   ├── :spec-review-design # Review design patterns
+│   ├── :spec-review-implementation  # Review implementation
+│   ├── :implement-phase    # Implement single phase (TDD)
+│   ├── :check-work         # Validate acceptance criteria
+│   └── :take-recommendations  # Apply review recommendations
+│
+├── bug                     # Fix bug with TDD
+├── fix-tests               # Run and fix tests
+└── git-session-cleanup     # Clean temporary files
 ```
 
-This creates:
-- `specs/` directory - Where specifications are stored
-
-The plugin includes `shared_docs/PATTERNS.md` which defines patterns for auto-apply decisions.
-
-### Ecosystem Mode (Optional)
-
-For multi-repository environments, `/init` offers ecosystem mode which enables cross-repo research:
-
-```bash
-# When prompted during init, choose "Yes" for ecosystem mode
-/vd_workflow:init
-```
-
-This creates:
-- `.claude/skills/{project}_expert.md` - Deep repository knowledge
-- `~/.claude/ecosystem-config.json` - Registry of ecosystems
-
-With ecosystem mode, you can use the `cross-repo-researcher` agent to investigate how things work across related repositories.
-
-## Commands
-
-### Feature Workflow (`/vd_workflow:spec`, `/vd_workflow:execute-wf`)
-
-| Command | Description |
-|---------|-------------|
-| `spec` | Create a new feature specification |
-| `spec-simplify` | Apply YAGNI principles to simplify specs |
-| `spec-tests` | Generate test specifications |
-| `spec-review-design` | Review design patterns and architecture |
-| `spec-review-implementation` | Review implementation decisions |
-| `implement-phase` | Implement a spec phase using TDD |
-| `check-work` | Validate acceptance criteria |
-| `bug` | Fix a bug using TDD methodology |
-
-### Utility Commands
-
-| Command | Description |
-|---------|-------------|
-| `init` | Initialize project with specs/ directory and optional ecosystem mode |
-| `setup-project` | Scaffold a new repository with ecosystem integration |
-| `fix-tests` | Run tests and fix failures |
-| `git-session-cleanup` | Clean up temporary files |
-
-## Agents
+### Agents
 
 | Agent | Purpose |
 |-------|---------|
 | `spec-writer` | Creates technical specifications |
-| `review-executor` | Orchestrates the spec review phase |
-| `feature-writer` | Implements feature phases from reviewed specs |
-| `feature-architect` | Analyzes architecture and designs solutions |
-| `tests-writer` | Generates comprehensive test suites |
-| `cross-repo-researcher` | Investigates across repositories in an ecosystem |
-| `validation-researcher` | Discovers validation tools and recommends approaches |
+| `review-executor` | Orchestrates review phase |
+| `feature-writer` | Implements phases with TDD |
+| `feature-architect` | Analyzes architecture |
+| `tests-writer` | Generates test suites |
+| `validation-researcher` | Discovers validation tools |
 
-## Skills
+### Skills
 
 | Skill | Purpose |
 |-------|---------|
-| `project-setup-expert` | Repository scaffolding and ecosystem integration |
-| `validation-expert` | Validation tool catalog and deployment patterns |
+| `validation-expert` | Validation tool catalog and patterns |
+| `plugin-marketplace` | Claude Code plugin system reference |
 
-## Usage Example
-
-```bash
-# Create a spec for a new feature
-/vd_workflow:spec "Add user authentication"
-
-# Run the complete workflow
-/vd_workflow:execute-wf specs/user-auth.md
-
-# Scaffold a new project with ecosystem integration
-/vd_workflow:setup-project --reference ../existing_project
-```
-
-## Key Principles
-
-- **No backward compatibility** - Direct integration, no parallel systems
-- **TDD approach** - Write failing tests first
-- **Phase-based implementation** - Incremental, buildable phases
-- **No code in specs** - Architecture described conceptually only
+---
 
 ## License
 
