@@ -2,7 +2,7 @@
 
 A Claude Code plugin for **verification-driven development**—define what "right" looks like, let the agent iterate until criteria are met.
 
-> This plugin implements the workflows described in [Verification-Driven Agentic Coding](https://jyaunches.github.io/blog/practical-agentic-coding). Read that article for the full philosophy; this README covers practical usage.
+> This plugin implements the workflows described in [Verification-Driven Agentic Coding](https://jyaunches.github.io/blog/verification-driven-agentic-coding). Read that article for the full philosophy; this README covers practical usage.
 
 ---
 
@@ -132,7 +132,7 @@ The plugin includes `shared_docs/PATTERNS.md` which encodes what gets verified d
 - **No backward compatibility hacks** — Direct integration
 - **Clean documentation** — Keep README/CLAUDE.md current
 
-Edit `PATTERNS.md` to tune verification to your team's standards. See the [blog article appendix](https://jyaunches.github.io/blog/practical-agentic-coding#appendix-tuning-your-verification-criteria) for examples.
+Edit `PATTERNS.md` to tune verification to your team's standards. See the [blog article appendix](https://jyaunches.github.io/blog/verification-driven-agentic-coding#appendix-tuning-your-verification-criteria) for examples.
 
 ---
 
