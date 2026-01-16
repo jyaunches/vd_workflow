@@ -238,11 +238,8 @@ rm -rf ~/.claude/plugins/cache/
 
 | Agent | Purpose |
 |-------|---------|
-| `spec-writer` | Creates technical specifications |
 | `review-executor` | Orchestrates review phase |
 | `feature-writer` | Implements phases with TDD |
-| `feature-architect` | Analyzes architecture |
-| `tests-writer` | Generates test suites |
 
 ### Skills
 

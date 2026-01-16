@@ -55,12 +55,9 @@ The `validation-expert` skill provides guidance on validation patterns and tool 
 
 ## Agent Architecture
 
-Agents are Tier 2 orchestrators that route to slash commands:
-- **spec-writer** (opus): Creates technical specifications
-- **review-executor** (sonnet): Orchestrates spec review phase
+Agents are orchestrators that run as subagents to manage multi-step workflows:
+- **review-executor** (sonnet): Orchestrates spec review phase (simplify → test spec → design review → implementation review)
 - **feature-writer** (sonnet): Implements phases using git SHA markers for progress tracking
-- **tests-writer**: Generates test suites
-- **feature-architect**: Analyzes architecture and designs solutions
 
 ## Skills
 

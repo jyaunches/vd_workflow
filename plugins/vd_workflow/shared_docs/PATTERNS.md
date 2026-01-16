@@ -21,10 +21,7 @@ This checklist codifies development patterns for projects using vd_workflow. Use
 - [ ] **Makefile Commands**: Use Makefile for ALL dev tasks (never direct `pytest`, `uv run`, or `pip`)
 - [ ] **uv Package Manager**: Exclusively use `uv` for dependency management (never `pip`)
 - [ ] **Specification-Driven**: Create spec in `specs/` before implementation via `/spec` command
-- [ ] **Agent Usage**:
-  - Use spec-writer agent for specifications
-  - Use tests-writer agent for test generation
-  - Follow TDD approach for bug fixes
+- [ ] **TDD Approach**: Follow test-driven development for bug fixes and implementations
 
 ## Test Patterns
 
