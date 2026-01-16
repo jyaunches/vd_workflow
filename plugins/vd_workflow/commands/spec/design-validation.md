@@ -11,8 +11,9 @@ I'll help you design a validation strategy for this specification through a guid
 
 This command:
 1. Analyzes your spec to understand what needs validation
-2. Asks you about your validation tools and approach
-3. Adds a validation phase to your spec
+2. Discovers available validation tools in your session
+3. Asks about your validation approach and confirms tools to use
+4. Designs validation steps and adds them to your spec
 
 ---
 
@@ -31,7 +32,30 @@ I'll identify:
 
 ---
 
-## Step 2: Ask About Validation Approach
+## Step 2: Discover Available Validation Tools
+
+I'll check what validation tools are available in this session.
+
+**Checking for MCP servers in current session:**
+
+Look for available MCP tools with patterns like:
+- `mcp__playwright__*` - Browser automation, UI testing, web interactions
+- `mcp__supabase__*` - Database queries, state verification
+- `mcp__github__*` - GitHub operations, PR checks, workflow status
+
+**Checking project tools:**
+```bash
+# Check for test frameworks and CLIs
+cat package.json 2>/dev/null | grep -E "(playwright|puppeteer|cypress|jest)" || true
+grep -E "(pytest|httpx|playwright)" pyproject.toml 2>/dev/null || true
+ls .github/workflows/*.yml 2>/dev/null || true
+```
+
+**I'll report what tools I found before proceeding.**
+
+---
+
+## Step 3: Ask About Validation Approach
 
 **Please tell me about your validation needs:**
 
@@ -54,7 +78,24 @@ I'll identify:
 
 ---
 
-## Step 3: Design Validation Steps
+## Step 4: Confirm Validation Tools
+
+Based on my discovery and your input, here are the tools I'll use for validation:
+
+**Tools I found in this session:**
+- [I'll list the MCP servers and tools I discovered]
+
+**Tools I recommend for this validation:**
+- [Tool 1]: [why/how it will be used for this feature]
+- [Tool 2]: [why/how it will be used for this feature]
+
+**Please confirm these tools are correct, or tell me what else to use.**
+
+Once confirmed, I'll design the validation steps using these specific tools.
+
+---
+
+## Step 5: Design Validation Steps
 
 Based on your input, I'll propose specific validation steps.
 
@@ -83,30 +124,45 @@ Step 3: Verify response
 
 ---
 
-## Step 4: Add Validation Phase to Spec
+## Step 6: Add Validation Phase to Spec
 
 Once you approve the validation steps, I'll add a validation phase to your spec:
 
 ```markdown
 ## Phase [N]: Validation
 
-**Description**: Verify the feature works correctly end-to-end.
+**Description**: Verify the feature works correctly end-to-end using the confirmed validation tools.
+
+**Tools**: [List confirmed tools - e.g., Playwright MCP, Supabase MCP, curl]
 
 **Validation Steps**:
 
 1. **[Step name]**
-   - Tool: [tool]
+   - Tool: [specific tool from confirmed list]
    - Action: [what to do]
    - Expected: [result]
 
 2. **[Step name]**
-   - Tool: [tool]
+   - Tool: [specific tool from confirmed list]
    - Action: [what to do]
    - Expected: [result]
 
+**Execution Instructions**:
+
+When executing this validation phase, Claude MUST:
+1. Execute each validation step using the specified tools
+2. If a validation step fails or issues are found:
+   - Identify the root cause
+   - Fix the issue in the implementation
+   - Re-run the validation step
+   - Continue this loop until the step passes
+3. Only mark this phase complete when ALL validation steps pass
+4. Report any issues that could not be resolved
+
 **Acceptance Criteria**:
-- [ ] [Criterion 1]
-- [ ] [Criterion 2]
+- [ ] All validation steps executed with specified tools
+- [ ] Any issues found were fixed and re-validated
+- [ ] Feature confirmed working end-to-end
 ```
 
 I'll add this phase before the "Clean the House" phase in your spec.
@@ -117,8 +173,11 @@ I'll add this phase before the "Clean the House" phase in your spec.
 
 After completing this command:
 - Your spec will have a validation phase with clear, executable steps
-- The validation uses tools you've specified
-- Steps can be run during `/execute-wf` implementation
+- Validation tools have been discovered and confirmed
+- The validation phase includes execution loop instructions for Claude to:
+  - Use the confirmed tools to validate the feature
+  - Fix any issues found and re-validate
+  - Loop until all validation passes
 
 ---
 
