@@ -240,6 +240,93 @@ When to use Playwright MCP instead of CLI:
 - **Visual verification**: Confirm UI displays correct data
 - **Third-party integrations**: Twilio console, Supabase dashboard, etc.
 
+## CRITICAL: Execution Philosophy
+
+**This skill is about DOING validation, not just PLANNING it.**
+
+### What Claude MUST Do
+
+When validating, Claude must:
+
+1. **Use REAL tools** - Not propose steps, EXECUTE them:
+   - `mcp__playwright__browser_navigate` - Actually navigate
+   - `mcp__playwright__browser_type` - Actually type text
+   - `mcp__supabase__execute_sql` - Actually run queries
+   - `gh run list` - Actually check workflow status
+
+2. **Send REAL messages** - For WhatsApp validation:
+   ```
+   mcp__playwright__browser_navigate url="https://web.whatsapp.com"
+   mcp__playwright__browser_type element="message input" text="Test message"
+   mcp__playwright__browser_click element="send button"
+   ```
+
+3. **Verify REAL state changes** - Query actual databases:
+   ```sql
+   SELECT * FROM transactions WHERE name = 'Test Merchant';
+   ```
+
+4. **Loop until passing** - If validation fails:
+   - Identify root cause
+   - Fix if possible
+   - Re-run validation
+   - Repeat until passing or max attempts
+
+### What Claude Must NOT Do
+
+- Propose validation steps without executing them
+- Suggest manual verification when tools are available
+- Skip verification because "tests exist"
+- Post validation results without actually validating
+
+### WhatsApp Web Validation Pattern (Detailed)
+
+**Pre-requisite**: Kill existing Chrome processes
+```bash
+pkill -f "chrome" 2>/dev/null || true
+```
+
+**Step 1**: Navigate to WhatsApp Web
+```
+mcp__playwright__browser_navigate url="https://web.whatsapp.com"
+```
+
+**Step 2**: Wait for page load, take snapshot
+```
+mcp__playwright__browser_wait_for time=5
+mcp__playwright__browser_snapshot
+```
+
+**Step 3**: Find and click on test chat (e.g., "Budget Me sandbox")
+```
+mcp__playwright__browser_click element="Budget Me sandbox chat" ref="[from snapshot]"
+```
+
+**Step 4**: Type test message
+```
+mcp__playwright__browser_type element="message input" ref="[from snapshot]" text="Test: Starbucks is dining"
+```
+
+**Step 5**: Send message
+```
+mcp__playwright__browser_press_key key="Enter"
+```
+
+**Step 6**: Wait for response
+```
+mcp__playwright__browser_wait_for time=60
+mcp__playwright__browser_snapshot
+```
+
+**Step 7**: Verify response
+- Check snapshot for expected response text
+- If not present, wait longer or investigate
+
+**Step 8**: Verify database state
+```
+mcp__supabase__execute_sql query="SELECT * FROM categorization_rules WHERE merchant LIKE '%Starbucks%'"
+```
+
 ## Inferring Validation Needs
 
 When analyzing a spec, look for these signals:
@@ -323,6 +410,90 @@ cat fly.toml 2>/dev/null
 which gh supabase aws gcloud 2>/dev/null
 ```
 
+## GitHub Issue/PR Validation
+
+### Analyzing PRs for Validation Needs
+
+When validating a GitHub PR, analyze the files changed to determine what validation is needed:
+
+**Fetch PR Details:**
+```bash
+gh pr view <number> --json title,body,files,commits,state
+```
+
+### PR File Change Patterns
+
+| File Pattern | Validation Approach |
+|--------------|---------------------|
+| `.github/workflows/*.yml` | Trigger workflow, verify `gh run list` status |
+| `**/rules.py`, `**/service.py` | Run unit tests, verify business logic |
+| `*.yaml` config files | Verify config parses, rules match expected data |
+| `alembic/versions/*.py` | Verify migration runs, check schema changes |
+| `**/api/**/*.py` | Hit endpoints with curl/httpx |
+| `streamlit_app/**/*.py` | Use Playwright to verify UI |
+| `**/whatsapp*.py` | Use Playwright for WhatsApp Web E2E |
+| `tests/**/*.py` | Run `pytest` on the test files |
+
+### PR Validation Decision Tree
+
+```
+Is it a workflow-only change?
+├── YES → Trigger workflow, verify status with gh CLI
+└── NO → Continue
+
+Does it have unit tests?
+├── YES → Run tests first, E2E optional
+└── NO → E2E validation recommended
+
+Does it touch WhatsApp/notification code?
+├── YES → Playwright MCP for full E2E
+└── NO → Continue
+
+Does it touch database queries/models?
+├── YES → Supabase MCP to verify state
+└── NO → Standard validation
+```
+
+### PR Triage Categories
+
+**Category A: Merge Directly**
+- Workflow files only (verify after merge)
+- YAML config changes with no code
+- Documentation changes
+- Simple skip patterns with tests
+
+**Category B: Run Tests First**
+- Code changes with comprehensive unit tests
+- Refactoring with existing test coverage
+- Bug fixes with regression tests
+
+**Category C: E2E Validation Recommended**
+- WhatsApp handler changes
+- Multi-system integration changes
+- User-facing workflow changes
+- Changes without unit tests
+
+### Posting Validation Results
+
+After validation, post results as a PR comment:
+
+```bash
+gh pr comment <number> --body "## Validation Results
+
+**Status**: PASSED/FAILED
+
+### Checks
+| Check | Status |
+|-------|--------|
+| Unit Tests | result |
+| E2E Flow | result |
+
+### Recommendation
+[Merge/Needs fixes]
+
+*Validated by Claude Code*"
+```
+
 ## When to Invoke This Skill
 
 Invoke this skill when:
@@ -331,6 +502,8 @@ Invoke this skill when:
 3. Recommending validation tools for a project
 4. Building new validation automation
 5. Updating the tool catalog with new discoveries
+6. **Analyzing GitHub PRs/issues for validation needs**
+7. **Triaging which PRs need E2E vs can merge directly**
 
 ## Recommendation Output Format
 
