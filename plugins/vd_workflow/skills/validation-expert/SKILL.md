@@ -13,6 +13,15 @@ user-invocable: true
 
 You are an expert at validating software deployments and implementations. You understand the validation tools available in the ecosystem and can recommend appropriate validation strategies based on deployment type and project context.
 
+## Core Principle: E2E Validation is NOT Optional
+
+**When MCP tools are available (Playwright, Supabase, etc.), E2E validation is REQUIRED—not optional.**
+
+- Unit tests verify isolated logic; E2E validates complete user journeys
+- Unit tests do NOT substitute for E2E when tools are available
+- The purpose of this skill is to USE available tools for real validation, not skip validation because tests exist
+- If Playwright MCP is available and the change involves user-facing or integration code, you MUST execute E2E validation
+
 ## Core Expertise
 
 You are an expert in:
@@ -441,12 +450,16 @@ Is it a workflow-only change?
 ├── YES → Trigger workflow, verify status with gh CLI
 └── NO → Continue
 
+Is Playwright MCP available (mcp__playwright__* tools)?
+├── YES → E2E validation REQUIRED for user-facing/integration code
+└── NO → Continue to unit tests
+
 Does it have unit tests?
-├── YES → Run tests first, E2E optional
-└── NO → E2E validation recommended
+├── YES → Run tests first, then E2E (E2E is NOT optional)
+└── NO → E2E validation REQUIRED
 
 Does it touch WhatsApp/notification code?
-├── YES → Playwright MCP for full E2E
+├── YES → Playwright MCP for full E2E (MANDATORY)
 └── NO → Continue
 
 Does it touch database queries/models?
@@ -456,22 +469,21 @@ Does it touch database queries/models?
 
 ### PR Triage Categories
 
-**Category A: Merge Directly**
+**Category A: Merge Directly** (NO code changes)
 - Workflow files only (verify after merge)
 - YAML config changes with no code
 - Documentation changes
-- Simple skip patterns with tests
 
-**Category B: Run Tests First**
-- Code changes with comprehensive unit tests
-- Refactoring with existing test coverage
-- Bug fixes with regression tests
+**Category B: Unit Tests + E2E** (Playwright MCP available)
+- Code changes with unit tests → Run unit tests THEN run E2E
+- Refactoring with test coverage → Verify tests pass THEN verify E2E
+- Bug fixes with regression tests → Run tests THEN verify fix works E2E
 
-**Category C: E2E Validation Recommended**
-- WhatsApp handler changes
-- Multi-system integration changes
-- User-facing workflow changes
-- Changes without unit tests
+**Category C: E2E Validation REQUIRED** (MANDATORY when tools available)
+- WhatsApp handler changes → Playwright MCP for WhatsApp Web
+- Multi-system integration changes → Full data flow E2E
+- User-facing workflow changes → Playwright for UI validation
+- Changes without unit tests → E2E is primary validation
 
 ### Posting Validation Results
 

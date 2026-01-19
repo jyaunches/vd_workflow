@@ -75,6 +75,16 @@ Check for available MCP tools with patterns:
 
 **I'll report what tools are available before proceeding.**
 
+### E2E Validation Requirement (CRITICAL)
+
+**If Playwright MCP is available (`mcp__playwright__*` tools exist), E2E validation is REQUIRED for PRs that involve:**
+- WhatsApp handler changes
+- User-facing workflow changes
+- Multi-system integration changes
+- Any code that affects user notifications or interactions
+
+Unit tests do NOT substitute for E2E. Run both when tools are available.
+
 ---
 
 ## Step 4: Design Validation Plan
