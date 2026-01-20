@@ -115,113 +115,52 @@ Based on the analysis, I'll create a validation plan:
 
 ---
 
-## Step 5: EXECUTE VALIDATION LOOP (CRITICAL)
+## Step 5: EXECUTE VALIDATION (via validation-executor)
 
-**Claude MUST execute validation in a loop until all checks pass:**
+After designing the validation plan in Step 4, spawn the `validation-executor` agent to execute it.
 
-### Execution Loop
+### Spawn validation-executor Agent
+
+Use the Task tool to spawn the `validation-executor` agent with:
 
 ```
-REPEAT for each validation step:
+VALIDATION_CONTEXT:
+  type: "pr"
+  identifier: "$ARGUMENTS"
 
-  1. EXECUTE the step using actual tools:
-     - Playwright MCP: Navigate, click, type, send REAL messages
-     - Supabase MCP: Execute REAL SQL queries
-     - gh CLI: Run real commands (gh run list, gh pr checks)
-     - pytest: Run actual tests
-
-  2. CHECK results:
-     - Did the expected outcome occur?
-     - Is the data in the expected state?
-     - Did tests pass?
-
-  3. IF CHECK FAILS:
-     - Identify root cause from error output
-     - ATTEMPT TO FIX the issue if possible
-     - Re-run the validation step
-     - If can't fix, document the failure
-
-  4. IF CHECK PASSES:
-     - Mark step as PASSED
-     - Move to next validation step
-
-UNTIL: All validation steps pass OR max attempts reached (3 per step)
+VALIDATION_STEPS:
+  - name: "<step name from validation plan>"
+    tool: "<tool from validation plan>"
+    action: "<action from validation plan>"
+    expected: "<expected result from validation plan>"
+  - ...
 ```
 
-### Validation Execution Patterns
+Format the validation steps from your Step 4 plan into the VALIDATION_STEPS structure.
 
-**Pattern: Run Unit Tests**
-```bash
-# Run tests for specific module
-pytest tests/unit/test_<module>.py -v
+### Handle Return Status
 
-# Run all tests
-pytest tests/ -v --tb=short
+The `validation-executor` agent returns:
+
+```
+STATUS: passed | failed | partial | blocked
+CAN_MARK_COMPLETE: true | false
+BLOCKED_RESOURCES: [list, only if blocked]
+STEPS_PASSED: [list]
+STEPS_FAILED: [list with reasons]
+ISSUES: [list]
 ```
 
-**Pattern: Verify GitHub Workflow**
-```bash
-# Check recent workflow runs
-gh run list --workflow=<name> --limit=3
+**If STATUS = blocked:**
+- Display blocked resources to user
+- Ask: "Please complete the following logins/setup, then say 'ready': [list of BLOCKED_RESOURCES]"
+- Wait for user to confirm ready
+- Re-spawn validation-executor agent
+- Repeat until not blocked
 
-# Get specific run status
-gh run view <run_id>
-
-# Wait for workflow if just triggered
-gh run watch <run_id>
-```
-
-**Pattern: WhatsApp Validation (Playwright MCP)**
-
-**IMPORTANT**: When the PR involves WhatsApp functionality:
-
-1. **Kill existing Chrome first:**
-   ```bash
-   pkill -f "chrome" 2>/dev/null || true
-   ```
-
-2. **Navigate to WhatsApp Web:**
-   ```
-   mcp__playwright__browser_navigate url="https://web.whatsapp.com"
-   ```
-
-3. **Wait for QR scan if needed, then find chat:**
-   ```
-   mcp__playwright__browser_snapshot
-   # Find the Budget Me sandbox chat
-   ```
-
-4. **Send a REAL test message:**
-   ```
-   mcp__playwright__browser_type element="message input" text="Test message from PR validation"
-   mcp__playwright__browser_click element="send button"
-   ```
-
-5. **Wait for and verify response:**
-   ```
-   mcp__playwright__browser_wait_for time=30
-   mcp__playwright__browser_snapshot
-   # Verify response was received
-   ```
-
-**Pattern: Database State Verification (Supabase MCP)**
-```sql
--- Check categorization rules
-SELECT * FROM merchant_rules WHERE merchant_name = 'Test';
-
--- Verify transaction state
-SELECT budget_category FROM transactions WHERE name LIKE '%test%';
-```
-
-**Pattern: Verify File Changes**
-```bash
-# Check if expected file was committed
-git log --oneline -5
-git diff HEAD~1 -- path/to/file
-
-# Verify YAML content
-cat .claude/categorization-rules.yaml | grep -A2 "merchant_name"
-```
+**If STATUS = passed | failed | partial:**
+- Record the results
+- Continue to Step 6 (Post Results)
 
 ---
 

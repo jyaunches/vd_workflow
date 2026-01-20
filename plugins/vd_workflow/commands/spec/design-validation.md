@@ -131,6 +131,8 @@ Once you approve the validation steps, I'll add a validation phase to your spec:
 ```markdown
 ## Phase [N]: Validation
 
+<!-- VALIDATION_PHASE -->
+
 **Description**: Verify the feature works correctly end-to-end using the confirmed validation tools.
 
 **Tools**: [List confirmed tools - e.g., Playwright MCP, Supabase MCP, curl]
