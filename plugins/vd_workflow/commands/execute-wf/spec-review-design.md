@@ -1,6 +1,6 @@
 ---
 description: Review specification for design improvements and architectural alignment
-argument-hint: <spec_path> <test_spec_path> [--auto-apply]
+argument-hint: <spec_dir> [--auto-apply]
 ---
 
 # Spec Review - Design
@@ -9,25 +9,37 @@ Review a specification and its test specification for design improvements and ar
 
 ## Arguments
 
-- spec_path: Path to the specification file (use @ for file suggestions)
-- test_spec_path: Path to the test specification file (use @ for file suggestions)
+- spec_dir: Path to the spec directory containing spec.md and tests.md
 - --auto-apply: (Optional) Enable intelligent auto-apply mode for automated workflows
 
 ## Usage
 
 ```bash
 # Manual mode - prompts for user decision
-/execute-wf:spec-review-design @specs/2025-01-08_weather_api_integration.md @specs/tests_2025-01-08_weather_api_integration.md
+/execute-wf:spec-review-design @specs/2025-01-08_weather_api_integration/
 
 # Auto-apply mode - automatically applies safe recommendations
-/execute-wf:spec-review-design @specs/2025-01-08_weather_api_integration.md @specs/tests_2025-01-08_weather_api_integration.md --auto-apply
+/execute-wf:spec-review-design @specs/2025-01-08_weather_api_integration/ --auto-apply
 ```
 
-You can type `/execute-wf:spec-review-design @` and Claude will provide file path suggestions as you type.
+**Internal Path Resolution:**
+- Spec file: `<spec_dir>/spec.md`
+- Test spec file: `<spec_dir>/tests.md`
+
+You can type `/execute-wf:spec-review-design @` and Claude will provide directory suggestions as you type.
 
 ## Description
 
 This command performs **Phase 1: Design Review** of both a specification file and its test specification. This should be run after completing `/spec-simplify`.
+
+### Locate PATTERNS.md
+
+Before starting the review, locate the project's PATTERNS.md file using this fallback order:
+
+1. **Repo-local**: `shared_docs/PATTERNS.md` (project customization)
+2. **Plugin default**: `~/Development/vd_workflow/plugins/vd_workflow/shared_docs/PATTERNS.md`
+
+Read the PATTERNS.md file to understand which recommendations align with project standards and can be auto-applied. If no PATTERNS.md is found, use conservative defaults (only auto-apply obvious improvements like Pythonic patterns).
 
 ### Phase 1: Design Review
 Reviews both spec and test spec for fundamental design improvements:

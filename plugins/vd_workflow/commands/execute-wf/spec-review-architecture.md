@@ -1,6 +1,6 @@
 ---
 description: Review specification through architectural lenses to surface fundamental design gaps
-argument-hint: <spec_path> [--auto-apply]
+argument-hint: <spec_dir> [--auto-apply]
 ---
 
 # Spec Review - Architecture
@@ -9,18 +9,21 @@ Review a specification through architectural thinking lenses to surface fundamen
 
 ## Arguments
 
-- spec_path: Path to the specification file (use @ for file suggestions)
+- spec_dir: Path to the spec directory containing spec.md
 - --auto-apply: (Optional) Enable intelligent auto-apply mode for automated workflows
 
 ## Usage
 
 ```bash
 # Manual mode - prompts for user decision on each finding
-/execute-wf:spec-review-architecture @specs/2025-01-19_feature.md
+/execute-wf:spec-review-architecture @specs/2025-01-19_feature/
 
 # Auto-apply mode - researches questions automatically where possible
-/execute-wf:spec-review-architecture @specs/2025-01-19_feature.md --auto-apply
+/execute-wf:spec-review-architecture @specs/2025-01-19_feature/ --auto-apply
 ```
+
+**Internal Path Resolution:**
+- Spec file: `<spec_dir>/spec.md`
 
 ## Description
 

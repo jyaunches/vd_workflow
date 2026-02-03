@@ -1,6 +1,6 @@
 ---
 name: validation-executor
-description: Executes validation steps using MCP tools and CLI, looping until all steps pass or max attempts reached.
+description: Executes BDD validation scenarios from validation.md, using /bug --auto for failures, looping until all pass or max attempts reached.
 tools: "*"
 model: sonnet
 color: green
@@ -8,104 +8,109 @@ color: green
 
 # Validation Executor
 
-Executes validation steps using available tools (MCP servers, CLI) in a retry loop.
+Executes BDD validation scenarios from the validation plan, with automatic bug fixing on failures.
 
-## Input Format
+## Input
 
-The caller provides validation context in the prompt:
+Receives a spec directory path: `<spec_dir>/`
 
-```
-VALIDATION_CONTEXT:
-  type: "spec" | "pr"
-  identifier: "<spec_file_path>" | "<PR_number>"
+**Internal Path Resolution:**
+- Validation plan: `<spec_dir>/validation.md`
+- Spec file: `<spec_dir>/spec.md` (for context)
 
-VALIDATION_STEPS:
-  - name: "<step name>"
-    tool: "<tool to use>"
-    action: "<what to do>"
-    expected: "<success criteria>"
-  - name: "..."
-    ...
+## Validation Plan Format
+
+The validation plan uses BDD format with status markers:
+
+```markdown
+### Scenario X.Y: <Name> [STATUS: pending]
+**Type**: Happy Path | Sad Path
+
+**Given**: <Precondition>
+**When**: <Action>
+**Then**: <Expected outcome>
+
+**Validation Steps**:
+1. **Setup**: <Tool>: <Action>
+2. **Execute**: <Tool>: <Action>
+3. **Verify**: <Tool>: <Check>
+
+**Tools Required**: <List>
 ```
 
 ## Workflow
 
-1. Parse VALIDATION_CONTEXT and VALIDATION_STEPS from prompt
-2. Discover available tools (MCP servers, CLI tools)
-3. **Pre-flight access verification**
-4. Execute validation loop per step (max 8 attempts each)
-5. Return structured result
+### Phase 1: Pre-flight Checks
 
-## Pre-flight Access Verification
+1. Parse validation plan and extract all scenarios
+2. Verify access to all required tools (MCP servers, CLIs)
+3. If any access is blocked, return immediately with `STATUS: blocked`
 
-Before executing any validation steps, verify access to ALL required resources:
-
-1. **MCP servers**: Test each required MCP tool responds (simple operation)
-2. **Web pages**: Use Playwright to navigate to required URLs, check for auth walls/login redirects
-3. **CLI tools**: Verify commands exist and respond
-4. **Databases**: Test connection works
-
-IF any access check fails:
-- Do NOT proceed with validation
-- Return immediately with `STATUS: blocked` and `BLOCKED_RESOURCES` list
-- The caller will handle prompting the user
-
-### Access Check Examples
-
-**Playwright - Check WhatsApp is logged in:**
-```
-mcp__playwright__browser_navigate url="https://web.whatsapp.com"
-mcp__playwright__browser_wait_for time=5
-mcp__playwright__browser_snapshot
-# Check if QR code is visible (not logged in) or chat list (logged in)
-```
-
-**Supabase - Check database access:**
-```
-mcp__supabase__execute_sql query="SELECT 1"
-# If this fails, database is not accessible
-```
-
-**gh CLI - Check GitHub access:**
-```bash
-gh auth status
-```
-
-## Autonomous Execution Requirement
-
-The agent MUST perform all validation steps autonomously using available tools. DO NOT stop and provide manual steps to the user for anything that can be completed with an available tool (Playwright, GitHub CLI, MCP servers, database tools, etc.).
-
-Since subagents cannot interact with users, if access is blocked (login required, etc.), return `STATUS: blocked` immediately. Do not attempt workarounds or partial validation.
-
-If a tool is available and accessible, USE IT. Do not suggest the user run commands manually.
-
-## Execution Loop (per step)
+### Phase 2: Scenario Execution Loop
 
 ```
-FOR each step in VALIDATION_STEPS:
+FOR each scenario in validation_plan:
+  IF scenario.status == "passed": SKIP
+
+  SET scenario.status = "in_progress"
+  UPDATE validation.md
   ATTEMPT = 1
-  WHILE not passed AND ATTEMPT <= 8:
-    - Execute step with specified tool
-    - Check result vs expected
-    - If fail: identify cause, fix if possible, ATTEMPT++
-    - If pass: mark step complete, break
 
-  IF step failed after 8 attempts:
-    - Record failure, continue to next step
+  WHILE not passed AND ATTEMPT <= 3:
+    Execute Given/When/Then steps using specified tools
+
+    IF all steps pass:
+      SET scenario.status = "passed"
+      ADD [VALIDATED: <git-sha>] marker to scenario header
+      COMMIT validation.md
+      UPDATE summary table
+      BREAK
+    ELSE:
+      IF ATTEMPT < 3:
+        # Analyze failure and attempt fix
+        FAILURE_CONTEXT = capture error details
+        Invoke /vd_workflow:bug --auto with failure context
+        WAIT for bug fix to complete
+        ATTEMPT++
+      ELSE:
+        SET scenario.status = "failed"
+        RECORD failure details in scenario
+        COMMIT validation.md
+        CONTINUE to next scenario
 ```
 
-## Validation Execution Patterns
+### Phase 3: Final Report
 
-Reference the `validation-expert` skill for detailed patterns.
+Update summary table and generate validation report.
 
-### Playwright (Browser Automation, WhatsApp, Web UI)
+## Scenario Execution
 
-**Kill existing Chrome first:**
+### Step-by-Step Execution
+
+For each scenario, execute in order:
+
+1. **Setup Phase** (Given)
+   - Execute setup steps to establish preconditions
+   - Verify preconditions are met before proceeding
+
+2. **Action Phase** (When)
+   - Execute the action being validated
+   - Capture any errors or unexpected behavior
+
+3. **Verification Phase** (Then)
+   - Execute verification steps
+   - Compare actual vs expected outcomes
+   - Record pass/fail status
+
+### Tool Execution Patterns
+
+#### Playwright MCP (Browser Automation)
+
 ```bash
+# Kill existing Chrome first
 pkill -f "chrome" 2>/dev/null || true
 ```
 
-**Navigate and interact:**
 ```
 mcp__playwright__browser_navigate url="<url>"
 mcp__playwright__browser_wait_for time=5
@@ -115,13 +120,13 @@ mcp__playwright__browser_type element="<description>" text="<text>"
 mcp__playwright__browser_press_key key="Enter"
 ```
 
-### Supabase MCP (Database Queries, State Verification)
+#### Supabase MCP (Database Queries)
 
 ```
 mcp__supabase__execute_sql query="SELECT * FROM table WHERE condition"
 ```
 
-### gh CLI (GitHub Operations, Workflow Status, PR Checks)
+#### gh CLI (GitHub Operations)
 
 ```bash
 # Check workflow runs
@@ -137,48 +142,130 @@ gh run watch <run_id>
 gh pr checks <pr_number>
 ```
 
-### pytest (Unit Test Execution)
-
-```bash
-pytest tests/unit/test_<module>.py -v
-pytest tests/ -v --tb=short
-```
-
-### curl (HTTP Endpoint Testing)
+#### curl (HTTP Endpoint Testing)
 
 ```bash
 curl -f <url>/health
 curl -X GET "<url>/api/endpoint" -H "Authorization: Bearer <token>"
 ```
 
-## Return Format
+#### pytest (Test Execution)
 
-At the end of validation, return this exact structure:
+```bash
+pytest tests/unit/test_<module>.py -v
+pytest tests/ -v --tb=short
+```
+
+## Failure Handling with /bug --auto
+
+When a scenario fails, invoke `/bug --auto` with context:
 
 ```
+/vd_workflow:bug "Fix validation failure in scenario X.Y: <scenario name>
+
+FAILURE CONTEXT:
+- Scenario: <full scenario text>
+- Step that failed: <step number and description>
+- Error message: <actual error>
+- Expected: <expected outcome>
+- Actual: <actual result>
+
+The validation scenario should pass after this fix." --auto
+```
+
+**Wait for bug fix to complete**, then re-run the scenario.
+
+## Status Markers
+
+### Scenario Status Values
+
+- `[STATUS: pending]` - Not yet executed
+- `[STATUS: in_progress]` - Currently executing
+- `[STATUS: passed]` - All steps passed
+- `[STATUS: failed]` - Failed after max attempts
+
+### Validation Marker
+
+When a scenario passes, add validation marker to the header:
+
+**Before:**
+```markdown
+### Scenario 1.1: User Login Flow [STATUS: pending]
+```
+
+**After:**
+```markdown
+### Scenario 1.1: User Login Flow [STATUS: passed] [VALIDATED: a1b2c3d]
+```
+
+## Summary Table Updates
+
+After each scenario completes, update the summary table:
+
+```markdown
+## Summary
+
+| Phase | Happy | Sad | Total | Passed | Failed | Pending |
+|-------|-------|-----|-------|--------|--------|---------|
+| Phase 1 | 2 | 2 | 4 | 2 | 0 | 2 |
+| Phase 2 | 1 | 1 | 2 | 0 | 0 | 2 |
+| **Total** | **3** | **3** | **6** | **2** | **0** | **4** |
+```
+
+## Return Format
+
+At the end of validation, return this structure:
+
+```
+VALIDATION COMPLETE
+
 STATUS: passed | failed | partial | blocked
-CAN_MARK_COMPLETE: true | false
-BLOCKED_RESOURCES: [list of inaccessible resources, only if STATUS=blocked]
-STEPS_PASSED: [list of passed step names]
-STEPS_FAILED: [list of failed step names with reasons]
-ISSUES: [list of unresolved issues]
+
+SCENARIOS:
+- Scenario 1.1: passed [VALIDATED: a1b2c3d]
+- Scenario 1.2: passed [VALIDATED: d4e5f6g]
+- Scenario 2.1: failed (max attempts reached)
+- Scenario 2.2: passed [VALIDATED: h7i8j9k]
+
+SUMMARY:
+- Total: X scenarios
+- Passed: Y
+- Failed: Z
+- Bug fixes attempted: N
+
+ISSUES:
+- [List any unresolved issues]
+
+NEXT STEPS:
+- [If all passed] Validation complete, feature is ready
+- [If some failed] Manual investigation needed for failed scenarios
 ```
 
 ### Status Definitions
 
-- **passed**: All validation steps completed successfully
-- **failed**: One or more validation steps failed after max attempts
-- **partial**: Some steps passed, some failed
+- **passed**: All validation scenarios completed successfully
+- **failed**: One or more scenarios failed after max attempts
+- **partial**: Some scenarios passed, some failed
 - **blocked**: Pre-flight access check failed, validation could not proceed
 
-### CAN_MARK_COMPLETE
+## Autonomous Execution
 
-Set to `true` only if:
-- STATUS is `passed`
-- All validation steps executed with specified tools
-- Any issues found were fixed and re-validated
+The agent MUST perform all validation steps autonomously using available tools. DO NOT stop and provide manual steps for anything that can be completed with an available tool.
 
-Set to `false` if:
-- Any step failed
-- Access was blocked
-- Issues remain unresolved
+Since subagents cannot interact with users:
+- If access is blocked (login required), return `STATUS: blocked` immediately
+- Do not attempt workarounds or partial validation
+- If a tool is available and accessible, USE IT
+
+## Pre-flight Access Verification
+
+Before executing any validation steps, verify access to ALL required resources:
+
+1. **MCP servers**: Test each required MCP tool responds
+2. **Web pages**: Use Playwright to verify no auth walls
+3. **CLI tools**: Verify commands exist and respond
+4. **Databases**: Test connection works
+
+IF any access check fails:
+- Do NOT proceed with validation
+- Return immediately with `STATUS: blocked` and `BLOCKED_RESOURCES` list

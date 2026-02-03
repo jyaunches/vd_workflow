@@ -1,11 +1,15 @@
 ---
 description: Execute implementation phases from specification and test specification files using test-driven development
-argument-hint: <spec_file_path> <test_spec_file_path> [--auto]
+argument-hint: <spec_dir> [--auto]
 ---
 
 # Implement Phase: $ARGUMENTS
 
-I'll execute the implementation phases from the specified specification and test specification files following a rigorous test-driven development workflow.
+I'll execute the implementation phases from the specified spec directory following a rigorous test-driven development workflow.
+
+**Internal Path Resolution:**
+- Spec file: `<spec_dir>/spec.md`
+- Test spec file: `<spec_dir>/tests.md`
 
 **Mode Detection:**
 ```bash
@@ -36,27 +40,31 @@ Do NOT stop implementation due to token usage warnings or budget notifications. 
 - Token warnings are informational only - they do not mean you must stop
 - Continue through all workflow steps (write tests → implement → commit → validate → mark complete)
 
-Let me start by analyzing both files and identifying the current phase status:
+Let me start by analyzing the spec directory and identifying the current phase status:
 
 ```bash
-echo "Specification files:"
-echo "Spec: $1"
-echo "Test Spec: $2"
+SPEC_DIR="${1%/}"  # Remove trailing slash if present
+SPEC_FILE="$SPEC_DIR/spec.md"
+TEST_SPEC_FILE="$SPEC_DIR/tests.md"
+
+echo "Spec directory: $SPEC_DIR"
+echo "Spec file: $SPEC_FILE"
+echo "Test spec file: $TEST_SPEC_FILE"
 ```
 
 ```bash
-echo "\n=== Phases in Specification ===" 
-grep -n "Phase.*:" "$1" | head -10
+echo "\n=== Phases in Specification ==="
+grep -n "Phase.*:" "$SPEC_FILE" | head -10
 ```
 
 ```bash
 echo "\n=== Completed Phases ==="
-grep -n "\[COMPLETED:" "$1" || echo "No completed phases found"
+grep -n "\[COMPLETED:" "$SPEC_FILE" || echo "No completed phases found"
 ```
 
 ```bash
-echo "\n=== Test Phases Available ===" 
-grep -n "Phase.*:" "$2" | head -10
+echo "\n=== Test Phases Available ==="
+grep -n "Phase.*:" "$TEST_SPEC_FILE" | head -10
 ```
 
 ## Phase Execution Workflow
@@ -112,7 +120,7 @@ Let me identify the next phase to implement and begin the workflow:
 ```bash
 # Find the first phase that isn't marked as COMPLETED
 echo "\n=== Next Phase Analysis ==="
-awk '/^#{1,4}.*Phase.*:/ { phase=$0; getline; content=$0; if(phase !~ /COMPLETED:/) { print "NEXT PHASE:", phase; exit } }' "$1"
+awk '/^#{1,4}.*Phase.*:/ { phase=$0; getline; content=$0; if(phase !~ /COMPLETED:/) { print "NEXT PHASE:", phase; exit } }' "$SPEC_FILE"
 ```
 
 Based on my analysis of both the specification file and test specification file, I'll now begin **Step 1: Phase Review & Alignment** for the next unfinished phase.
@@ -145,5 +153,6 @@ I will analyze each phase, present the implementation plan, and immediately proc
 - Continues until all phases are complete
 
 Ready to analyze the first unfinished phase from:
-- **Specification**: $1
-- **Test Specification**: $2
+- **Spec Directory**: $SPEC_DIR
+- **Specification**: $SPEC_DIR/spec.md
+- **Test Specification**: $SPEC_DIR/tests.md

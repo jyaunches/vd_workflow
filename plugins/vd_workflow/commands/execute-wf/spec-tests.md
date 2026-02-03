@@ -1,6 +1,6 @@
 ---
 description: Create test guides aligned with specification phases for TDD
-argument-hint: <spec_file> [instructions]
+argument-hint: <spec_dir> [instructions]
 ---
 
 # spec-tests
@@ -10,7 +10,7 @@ Create comprehensive test guides aligned with specification phases for increment
 ## Usage
 
 ```
-/execute-wf:spec-tests @<spec-file> [instructions]
+/execute-wf:spec-tests @<spec_dir> [instructions]
 ```
 
 ## Purpose
@@ -19,10 +19,14 @@ This command creates test guides for ALL phases in a specification file to suppo
 
 ## Process
 
-1. **Analyze Specification**: Read spec file and extract all implementation phases
+1. **Analyze Specification**: Read `<spec_dir>/spec.md` and extract all implementation phases
 2. **Review Existing Tests**: Scan `tests/` directory for current test patterns
 3. **Create Complete Test Guide**: Generate test specifications for every spec phase
-4. **Save Test Specification**: Output as `specs/tests_YYYY-MM-DD_<feature_name>.md`
+4. **Save Test Specification**: Output as `<spec_dir>/tests.md`
+
+**Internal Path Resolution:**
+- Input spec: `<spec_dir>/spec.md`
+- Output test spec: `<spec_dir>/tests.md`
 
 ## Output Format
 

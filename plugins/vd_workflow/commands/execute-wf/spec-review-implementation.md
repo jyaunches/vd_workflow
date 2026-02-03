@@ -1,6 +1,6 @@
 ---
 description: Review specification for implementation clarity and technical decisions
-argument-hint: <spec_path> <test_spec_path> [--auto-apply]
+argument-hint: <spec_dir> [--auto-apply]
 ---
 
 # Spec Review - Implementation
@@ -9,25 +9,37 @@ Review a specification and its test specification for implementation clarity and
 
 ## Arguments
 
-- spec_path: Path to the specification file (use @ for file suggestions)
-- test_spec_path: Path to the test specification file (use @ for file suggestions)
+- spec_dir: Path to the spec directory containing spec.md and tests.md
 - --auto-apply: (Optional) Enable intelligent auto-apply mode for automated workflows
 
 ## Usage
 
 ```bash
 # Manual mode - prompts for user decision
-/execute-wf:spec-review-implementation @specs/2025-01-08_weather_api_integration.md @specs/tests_2025-01-08_weather_api_integration.md
+/execute-wf:spec-review-implementation @specs/2025-01-08_weather_api_integration/
 
 # Auto-apply mode - automatically applies safe implementation decisions
-/execute-wf:spec-review-implementation @specs/2025-01-08_weather_api_integration.md @specs/tests_2025-01-08_weather_api_integration.md --auto-apply
+/execute-wf:spec-review-implementation @specs/2025-01-08_weather_api_integration/ --auto-apply
 ```
 
-You can type `/execute-wf:spec-review-implementation @` and Claude will provide file path suggestions as you type.
+**Internal Path Resolution:**
+- Spec file: `<spec_dir>/spec.md`
+- Test spec file: `<spec_dir>/tests.md`
+
+You can type `/execute-wf:spec-review-implementation @` and Claude will provide directory suggestions as you type.
 
 ## Description
 
 This command performs **Phase 2: Implementation Review** - a detailed analysis of implementation clarity and technical decisions. This should be run after completing `/spec-review` (Phase 1: Design Review).
+
+### Locate PATTERNS.md
+
+Before starting the review, locate the project's PATTERNS.md file using this fallback order:
+
+1. **Repo-local**: `shared_docs/PATTERNS.md` (project customization)
+2. **Plugin default**: `~/Development/vd_workflow/plugins/vd_workflow/shared_docs/PATTERNS.md`
+
+Read the PATTERNS.md file to understand which implementation decisions align with project standards and can be auto-applied. If no PATTERNS.md is found, use conservative defaults (only auto-apply decisions that match existing codebase patterns).
 
 ### Implementation Review Focus Areas
 

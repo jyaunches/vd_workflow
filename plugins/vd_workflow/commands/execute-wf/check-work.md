@@ -1,11 +1,15 @@
 ---
 description: Check acceptance criteria, run tests with auto-fixes, and recommend next steps after /implement-phase
-argument-hint: <spec_file_path> <test_spec_file_path>
+argument-hint: <spec_dir>
 ---
 
 # Check Work: $ARGUMENTS
 
 I'll analyze the implementation against acceptance criteria to determine if work is complete and assess integration test coverage.
+
+**Internal Path Resolution:**
+- Spec file: `<spec_dir>/spec.md`
+- Test spec file: `<spec_dir>/tests.md`
 
 ## Command Purpose
 
@@ -26,9 +30,14 @@ This command helps you determine:
 First, I'll read both specification files to understand the requirements:
 
 ```bash
+SPEC_DIR="${1%/}"  # Remove trailing slash if present
+SPEC_FILE="$SPEC_DIR/spec.md"
+TEST_SPEC_FILE="$SPEC_DIR/tests.md"
+
 echo "=== Reading Specification Files ==="
-echo "Main Spec: $1"
-echo "Test Spec: $2"
+echo "Spec Directory: $SPEC_DIR"
+echo "Main Spec: $SPEC_FILE"
+echo "Test Spec: $TEST_SPEC_FILE"
 ```
 
 I'll extract:
@@ -43,10 +52,10 @@ I'll extract:
 echo "\n=== Analyzing Implementation Status ==="
 
 # Check for completed phase markers
-grep -n "Phase.*:" "$1" | head -20
+grep -n "Phase.*:" "$SPEC_FILE" | head -20
 
 echo "\n=== Completed Phases ==="
-grep -n "\[COMPLETED:" "$1" || echo "No phases marked as completed"
+grep -n "\[COMPLETED:" "$SPEC_FILE" || echo "No phases marked as completed"
 
 echo "\n=== Recent Implementation Commits ==="
 git log --oneline -15 --grep="Phase" --grep="implement" -i
@@ -425,7 +434,7 @@ Based on acceptance criteria, test results, and coverage analysis, I'll recommen
 
 **Specific Command:**
 ```bash
-/execute-wf:implement-phase specs/[spec-file] specs/[test-spec-file]
+/execute-wf:implement-phase specs/[spec_dir]/
 ```
 
 **Focus Areas:**
@@ -555,7 +564,7 @@ Based on acceptance criteria, test results, and coverage analysis, I'll recommen
    - `/bug "Fix [test failure 2]"`
 
 2. [Based on completion score]:
-   - [If <70%] `/implement-phase specs/[spec] specs/[test-spec]`
+   - [If <70%] `/implement-phase specs/[spec_dir]/`
    - [If >=70%] File minor bugs for remaining items
    - [If 100%] Ready for deployment
 
@@ -647,5 +656,6 @@ Based on acceptance criteria, test results, and coverage analysis, I'll recommen
 ---
 
 Ready to analyze your implementation against specifications:
-- **Main Spec:** $1
-- **Test Spec:** $2
+- **Spec Directory:** $1
+- **Main Spec:** $1/spec.md
+- **Test Spec:** $1/tests.md

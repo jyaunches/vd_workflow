@@ -125,25 +125,22 @@ Every specification MUST include a final "Clean the House" phase with the follow
 **Note**: This phase ensures documentation stays current with code changes.
 
 ## File Creation
-I'll create the specification file in `specs/` following the naming convention: `YYYY-MM-DD_HH-mm_<feature_name>.md`
-- The date prefix uses today's date in YYYY-MM-DD_HH-mm format
+I'll create the specification in a directory structure: `specs/YYYY-MM-DD_<feature_name>/`
+- The directory contains: `spec.md`, `tests.md` (created later), `validation.md` (created later)
+- The date prefix uses today's date in YYYY-MM-DD format
 - This ensures specs are chronologically ordered by creation date
+- All related artifacts for a feature live in one directory
 
-## Validation Design Phase
-
-After creating the specification file, I'll invoke the validation design command to help you define how to validate this feature works correctly:
-
-```bash
-/vd_workflow:spec:design-validation <spec_file_path>
+**Directory Structure:**
+```
+specs/
+└── YYYY-MM-DD_<feature_name>/
+    ├── spec.md          # Main specification (created by this command)
+    ├── tests.md         # Test specification (created by /execute-wf:spec-tests)
+    └── validation.md    # Validation plan (created by /execute-wf:validation-plan)
 ```
 
-This Q&A-driven phase will:
-1. Ask about deployment and validation needs
-2. Propose validation requirements based on the spec
-3. Research available validation tools (MCP servers, CLIs, SDKs)
-4. Add a validation phase to your spec
-
-The validation phase ensures your feature can be verified after implementation.
+**Note:** Validation planning is now handled by `/execute-wf:validation-plan` during the review phase of `/execute-wf`, not during spec creation.
 
 ---
 
