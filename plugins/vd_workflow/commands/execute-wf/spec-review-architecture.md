@@ -108,16 +108,15 @@ Dependencies should point toward stable things, not volatile things.
 ## Lens 2: Who Knows What, When?
 
 ### Observation
-Spec proposes pattern matching on message content to determine if user
-is categorizing a special merchant.
+Spec proposes parsing request headers to determine which client sent the request.
 
 ### Potential Gap
-Router is inferring what user is responding to, when the user actually
-knows (they're looking at the original message).
+Server is inferring client identity from headers, when the client could
+explicitly identify itself in the request payload.
 
 ### Questions to Investigate
-1. Does the messaging platform provide reply context?
+1. Can the client include an explicit identifier in requests?
 
 ### Investigation Approach
-- [ ] Research: Check Twilio webhook docs for reply-related fields
+- [ ] Research: Check API client SDK for identity options
 ```

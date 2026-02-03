@@ -31,19 +31,16 @@ gh issue view $ARGUMENTS --json title,body,state
 
 ## Step 2: Analyze What Needs Validation
 
-Based on the PR/issue content, identify:
-
-### File Change Analysis
+Based on the PR/issue content, identify validation needs from file patterns:
 
 | Pattern | Inferred Validation |
 |---------|---------------------|
 | `.yml` workflow files | Trigger workflow, check `gh run list` status |
-| `rules.py`, `service.py` | Run unit tests, verify categorization behavior |
-| `categorization-rules.yaml` | Verify rules match expected transactions |
-| Database migrations | Verify migration runs, check schema |
-| API endpoints | Hit endpoints with curl/httpx |
-| Streamlit pages | Use Playwright to verify UI |
-| WhatsApp-related code | Use Playwright to send real WhatsApp message |
+| `**/api/**`, `**/routes/**` | Hit endpoints with curl/httpx |
+| `**/models/**`, migrations | Verify migration runs, check schema |
+| `**/*_test.py`, `**/*.test.ts` | Run test suite |
+| `**/cli/**`, `**/commands/**` | Verify CLI help and basic operations |
+| UI components | Use Playwright if available |
 
 ### Test Coverage Check
 
@@ -63,14 +60,13 @@ done
 **MCP Servers in Current Session:**
 
 Check for available MCP tools with patterns:
-- `mcp__playwright__*` - Browser automation for WhatsApp, web UI
-- `mcp__supabase__*` - Database queries, state verification
-- `mcp__github__*` - GitHub operations (alternative to gh CLI)
+- `mcp__playwright__*` - Browser automation for web UI
+- `mcp__*` - Other MCP servers (database, APIs, etc.)
 
 **Always Available:**
 - `gh` CLI - GitHub operations, workflow status, PR checks
 - `curl` - HTTP endpoint testing
-- `pytest` - Run unit tests
+- `pytest` / `jest` / `make test` - Run unit tests
 - `git` - Verify commits, file changes
 
 **I'll report what tools are available before proceeding.**
@@ -78,10 +74,9 @@ Check for available MCP tools with patterns:
 ### E2E Validation Requirement (CRITICAL)
 
 **If Playwright MCP is available (`mcp__playwright__*` tools exist), E2E validation is REQUIRED for PRs that involve:**
-- WhatsApp handler changes
 - User-facing workflow changes
 - Multi-system integration changes
-- Any code that affects user notifications or interactions
+- Web UI changes
 
 Unit tests do NOT substitute for E2E. Run both when tools are available.
 
@@ -96,7 +91,7 @@ Based on the analysis, I'll create a validation plan:
 
 ### Validation Tools Available
 - [ ] Playwright MCP: [Yes/No]
-- [ ] Supabase MCP: [Yes/No]
+- [ ] Database MCP: [Yes/No]
 - [ ] gh CLI: [Yes]
 - [ ] pytest: [Yes]
 
@@ -212,25 +207,24 @@ After all validation completes:
 ## Quick Reference: Common Validation Scenarios
 
 ### Scenario: Code Changes with Unit Tests
-1. Run `pytest tests/` to verify existing tests pass
+1. Run `pytest tests/` or `npm test` to verify tests pass
 2. If tests exist for changed files, verify they cover the changes
 3. Check code coverage if available
 
 ### Scenario: GitHub Actions Workflow Changes
 1. Trigger the workflow manually: `gh workflow run <name>`
 2. Watch for completion: `gh run watch`
-3. Verify expected outcomes (commits, comments, etc.)
+3. Verify expected outcomes
 
-### Scenario: Categorization Rules/Logic Changes
-1. Run categorization unit tests
-2. Query database for test transactions
-3. Verify rules match expected categories
+### Scenario: API Endpoint Changes
+1. Run unit tests for the endpoint
+2. Use curl to hit the endpoint directly
+3. Verify response format and status codes
 
-### Scenario: WhatsApp Handler Changes
-1. Use Playwright to send test WhatsApp message
-2. Wait for GitHub Action to trigger
-3. Verify response received in chat
-4. Check database for expected state changes
+### Scenario: Database Migration Changes
+1. Verify migration runs without errors
+2. Check schema matches expected state
+3. Run any affected integration tests
 
 ---
 

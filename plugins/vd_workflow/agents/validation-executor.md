@@ -120,10 +120,10 @@ mcp__playwright__browser_type element="<description>" text="<text>"
 mcp__playwright__browser_press_key key="Enter"
 ```
 
-#### Supabase MCP (Database Queries)
+#### Database MCP (Database Queries)
 
 ```
-mcp__supabase__execute_sql query="SELECT * FROM table WHERE condition"
+mcp__<db_server>__execute_sql query="SELECT * FROM table WHERE condition"
 ```
 
 #### gh CLI (GitHub Operations)

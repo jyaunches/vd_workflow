@@ -15,7 +15,7 @@ Expert at validating software deployments. Understands available validation tool
 
 ## Core Principle: E2E Validation is NOT Optional
 
-**When MCP tools are available (Playwright, Supabase, etc.), E2E validation is REQUIRED.**
+**When MCP tools are available (Playwright, database MCP, etc.), E2E validation is REQUIRED.**
 
 - Unit tests verify isolated logic; E2E validates complete user journeys
 - Unit tests do NOT substitute for E2E when tools are available
@@ -46,8 +46,8 @@ Expert at validating software deployments. Understands available validation tool
 
 | Server | Tool Pattern | Validation Uses |
 |--------|--------------|-----------------|
-| Playwright | `mcp__playwright__*` | Browser automation, WhatsApp Web, UI testing |
-| Supabase | `mcp__supabase__*` | Query state changes, verify persistence |
+| Playwright | `mcp__playwright__*` | Browser automation, web UI testing, form submission |
+| Database MCP | `mcp__*_db__*` | Query state changes, verify persistence |
 | GitHub | `mcp__github__*` | PR checks, workflow status |
 
 ## Deployment-Specific Patterns
@@ -79,7 +79,7 @@ Expert at validating software deployments. Understands available validation tool
 ```
 Look for tool names starting with mcp__:
 - mcp__playwright__* → Browser automation available
-- mcp__supabase__* → Database access available
+- mcp__*_db__*, mcp__postgres__*, mcp__mysql__* → Database access available
 - mcp__github__* → GitHub API available
 ```
 
@@ -92,7 +92,7 @@ This is the most reliable way to know what validation tools are available.
 cat .claude/settings.json | jq '.mcpServers // empty'
 
 # Check for global CLIs
-which gh supabase aws gcloud 2>/dev/null
+which gh aws gcloud 2>/dev/null
 ```
 
 ## GitHub Issue/PR Validation
@@ -108,11 +108,10 @@ gh pr view <number> --json title,body,files,commits,state
 | File Pattern | Validation Approach |
 |--------------|---------------------|
 | `.github/workflows/*.yml` | Trigger workflow, verify status |
-| `**/service.py` | Run unit tests |
-| `*.yaml` config | Verify config parses |
-| `**/api/**/*.py` | Hit endpoints with curl |
-| `streamlit_app/**/*.py` | Playwright for UI |
-| `tests/**/*.py` | Run `pytest` |
+| `**/api/**`, `**/routes/**` | Hit endpoints with curl |
+| `**/models/**`, migrations | Verify schema changes |
+| `**/ui/**`, `**/pages/**` | Playwright for UI if available |
+| `tests/**` | Run test suite |
 
 ### PR Triage Categories
 
@@ -120,7 +119,7 @@ gh pr view <number> --json title,body,files,commits,state
 
 **Unit Tests + E2E** (Playwright available): Code changes with tests
 
-**E2E Required**: WhatsApp handlers, multi-system integration, user-facing workflows
+**E2E Required**: Multi-system integration, user-facing workflows, web UI changes
 
 ## Recommendation Output Format
 

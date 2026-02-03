@@ -43,7 +43,7 @@ I'll check what validation tools are available in this session.
 
 **Checking for MCP servers:**
 - `mcp__playwright__*` - Browser automation, UI testing
-- `mcp__supabase__*` - Database queries, state verification
+- `mcp__*_db__*`, `mcp__postgres__*` - Database queries, state verification
 - `mcp__github__*` - GitHub operations, PR checks
 
 **Checking project tools:**
@@ -105,7 +105,7 @@ Test Spec: <spec_dir>/tests.md
 
 ## Overview
 **Feature**: <Brief description>
-**Available Tools**: <Playwright MCP, Supabase MCP, gh CLI, etc.>
+**Available Tools**: <Playwright MCP, Database MCP, gh CLI, etc.>
 
 ## Coverage Summary
 - Happy Paths: <count> scenarios
@@ -186,7 +186,7 @@ Test Spec: <spec_dir>/tests.md
 | Validation Need | Tool |
 |----------------|------|
 | Browser UI interaction | Playwright MCP |
-| Database state verification | Supabase MCP |
+| Database state verification | Database MCP |
 | API endpoint testing | curl / httpx |
 | GitHub PR/workflow checks | gh CLI |
 | File system verification | Bash |
