@@ -2,7 +2,7 @@
 name: review-executor
 description: Orchestrates the spec review phase - runs simplify, test spec generation, validation plan, design review, and implementation review in sequence.
 tools: Bash, Read, Skill
-model: sonnet
+model: opus
 color: purple
 ---
 

@@ -2,7 +2,7 @@
 name: feature-writer
 description: Implements feature phases from reviewed specs, looping until all phases have [COMPLETED:] markers.
 tools: Bash, Read, Write, Edit, Grep, Glob, Skill
-model: sonnet
+model: opus
 color: blue
 ---
 

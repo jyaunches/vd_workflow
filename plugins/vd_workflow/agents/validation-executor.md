@@ -2,7 +2,7 @@
 name: validation-executor
 description: Executes BDD validation scenarios from validation.md, using /bug --auto for failures, looping until all pass or max attempts reached.
 tools: Bash, Read, Write, Edit, Grep, Glob, Skill
-model: sonnet
+model: opus
 color: green
 ---
 
