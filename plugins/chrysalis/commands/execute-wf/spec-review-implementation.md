@@ -37,7 +37,7 @@ This command performs **Phase 2: Implementation Review** - a detailed analysis o
 Before starting the review, locate the project's PATTERNS.md file using this fallback order:
 
 1. **Repo-local**: `shared_docs/PATTERNS.md` (project customization)
-2. **Plugin default**: `~/Development/vd_workflow/plugins/vd_workflow/shared_docs/PATTERNS.md`
+2. **Plugin default**: `~/Development/chrysalis/plugins/chrysalis/shared_docs/PATTERNS.md`
 
 Read the PATTERNS.md file to understand which implementation decisions align with project standards and can be auto-applied. If no PATTERNS.md is found, use conservative defaults (only auto-apply decisions that match existing codebase patterns).
 

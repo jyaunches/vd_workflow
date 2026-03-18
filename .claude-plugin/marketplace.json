@@ -1,13 +1,13 @@
 {
-  "name": "vd_workflow",
+  "name": "chrysalis",
   "owner": {
     "name": "jyaunches"
   },
   "description": "Verification-driven development workflow with TDD methodology",
   "plugins": [
     {
-      "name": "vd_workflow",
-      "source": "./plugins/vd_workflow",
+      "name": "chrysalis",
+      "source": "./plugins/chrysalis",
       "description": "Verification-driven development workflow commands, agents, and skills"
     }
   ]

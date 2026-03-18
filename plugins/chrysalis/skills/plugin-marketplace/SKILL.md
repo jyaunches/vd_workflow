@@ -418,8 +418,8 @@ When a plugin is completely broken and nothing else works, use the nuclear clean
 # From this plugin's skill directory, or copy the script
 ./nuclear-cleanup.sh <plugin_name> <marketplace_name> [github_repo]
 
-# Example for vd_workflow:
-./nuclear-cleanup.sh vd_workflow vd_workflow jyaunches/vd_workflow
+# Example for chrysalis:
+./nuclear-cleanup.sh chrysalis chrysalis jyaunches/chrysalis
 ```
 
 This script removes ALL traces of a plugin from:
@@ -433,8 +433,8 @@ After running, restart Claude Code and re-add the marketplace fresh.
 
 **Manual Nuclear Cleanup** (if script unavailable):
 ```bash
-PLUGIN="vd_workflow"
-MARKETPLACE="vd_workflow"
+PLUGIN="chrysalis"
+MARKETPLACE="chrysalis"
 
 # Remove cache and marketplace dirs
 rm -rf ~/.claude/plugins/cache/$MARKETPLACE
@@ -447,7 +447,7 @@ cat ~/.claude/plugins/known_marketplaces.json | jq "del(.[\"${MARKETPLACE}\"])" 
 cat ~/.claude/plugins/installed_plugins.json | jq "del(.plugins[\"${PLUGIN}@${MARKETPLACE}\"])" > /tmp/i.json && mv /tmp/i.json ~/.claude/plugins/installed_plugins.json
 
 # Then restart Claude Code and re-add:
-# /plugin marketplace add jyaunches/vd_workflow
+# /plugin marketplace add jyaunches/chrysalis
 ```
 
 ### Common JSON Errors

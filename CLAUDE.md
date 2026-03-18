@@ -4,16 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a Claude Code plugin (`vd_workflow`) that provides spec-driven development workflow commands and agents. It implements a structured approach to feature development: Spec Creation → Spec Review → TDD Implementation → Validation.
+This is a Claude Code plugin (`chrysalis`) that provides spec-driven development workflow commands and agents. It implements a structured approach to feature development: Spec Creation → Spec Review → TDD Implementation → Validation.
 
 ## Repository Structure (Marketplace Layout)
 
 ```
-vd_workflow/                    # Marketplace root
+chrysalis/                    # Marketplace root
 ├── .claude-plugin/
 │   └── marketplace.json              # Marketplace manifest
 ├── plugins/
-│   └── vd_workflow/            # Plugin directory
+│   └── chrysalis/            # Plugin directory
 │       ├── .claude-plugin/
 │       │   └── plugin.json           # Plugin manifest
 │       ├── commands/                 # Slash commands
@@ -45,7 +45,7 @@ All commands take a `<spec_dir>` argument (e.g., `specs/2024-01-15_user_auth/`) 
 ## Key Workflows
 
 ### Complete Feature Workflow
-`/vd_workflow:execute-wf <spec_dir>` runs the full automated three-phase workflow:
+`/chrysalis:execute-wf <spec_dir>` runs the full automated three-phase workflow:
 
 1. **Review Phase** (review-executor agent):
    - Simplify spec → Generate test spec → Generate validation plan
@@ -62,10 +62,10 @@ All commands take a `<spec_dir>` argument (e.g., `specs/2024-01-15_user_auth/`) 
    - Mark scenarios as `[VALIDATED: sha]`
 
 ### Manual Steps
-- `/vd_workflow:spec <name> "<description>"` - Create new specification directory
-- `/vd_workflow:execute-wf:implement-phase <spec_dir> [--auto]` - Execute implementation phases
-- `/vd_workflow:execute-wf:validation-plan <spec_dir>` - Generate BDD validation scenarios
-- `/vd_workflow:execute-wf:validation-review <spec_dir>` - Review/approve validation plan
+- `/chrysalis:spec <name> "<description>"` - Create new specification directory
+- `/chrysalis:execute-wf:implement-phase <spec_dir> [--auto]` - Execute implementation phases
+- `/chrysalis:execute-wf:validation-plan <spec_dir>` - Generate BDD validation scenarios
+- `/chrysalis:execute-wf:validation-review <spec_dir>` - Review/approve validation plan
 
 ## Agent Architecture
 

@@ -183,7 +183,7 @@ gh pr comment $ARGUMENTS --body "$(cat <<'EOF'
 - [Merge / Needs fixes / etc.]
 
 ---
-*Validated by Claude Code using `/vd_workflow:validate-issue`*
+*Validated by Claude Code using `/chrysalis:validate-issue`*
 EOF
 )"
 ```

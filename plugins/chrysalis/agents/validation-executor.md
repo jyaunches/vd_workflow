@@ -69,7 +69,7 @@ FOR each scenario in validation_plan:
       IF ATTEMPT < 3:
         # Analyze failure and attempt fix
         FAILURE_CONTEXT = capture error details
-        Invoke /vd_workflow:bug --auto with failure context
+        Invoke /chrysalis:bug --auto with failure context
         WAIT for bug fix to complete
         ATTEMPT++
       ELSE:
@@ -161,7 +161,7 @@ pytest tests/ -v --tb=short
 When a scenario fails, invoke `/bug --auto` with context:
 
 ```
-/vd_workflow:bug "Fix validation failure in scenario X.Y: <scenario name>
+/chrysalis:bug "Fix validation failure in scenario X.Y: <scenario name>
 
 FAILURE CONTEXT:
 - Scenario: <full scenario text>

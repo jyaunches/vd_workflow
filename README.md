@@ -1,4 +1,4 @@
-# vd_workflow
+# chrysalis
 
 A Claude Code plugin for **verification-driven development**—define what "right" looks like, let the agent iterate until criteria are met.
 
@@ -10,11 +10,11 @@ A Claude Code plugin for **verification-driven development**—define what "righ
 
 ```bash
 # 1. Install the plugin
-/plugin marketplace add jyaunches/vd_workflow
+/plugin marketplace add jyaunches/chrysalis
 
 # 2. Create your first spec (assumes your context window contains discussion about the feature, 
 # maybe even a plan file from plan mode, use the string argument to pass in any additional instructions)
-/vd_workflow:spec my-feature "Additional instructions for spec creation"
+/chrysalis:spec my-feature "Additional instructions for spec creation"
 ```
 
 ---
@@ -48,7 +48,7 @@ flowchart LR
 Creates a specification file with phases, acceptance criteria, and a validation strategy.
 
 ```bash
-/vd_workflow:spec feature-name "Additional instructions for spec creation"
+/chrysalis:spec feature-name "Additional instructions for spec creation"
 ```
 
 **What happens:**
@@ -70,7 +70,7 @@ Creates a specification file with phases, acceptance criteria, and a validation 
 Takes a spec file and executes the full workflow: review, then implement.
 
 ```bash
-/vd_workflow:execute-wf specs/my-feature.md
+/chrysalis:execute-wf specs/my-feature.md
 ```
 
 **What happens:**
@@ -142,9 +142,9 @@ These commands support the workflow but aren't the core workflow themselves.
 
 | Command | Purpose |
 |---------|---------|
-| `/vd_workflow:bug` | Fix a bug using TDD methodology |
-| `/vd_workflow:fix-tests` | Run tests and fix failures |
-| `/vd_workflow:git-session-cleanup` | Clean up temporary files from a session |
+| `/chrysalis:bug` | Fix a bug using TDD methodology |
+| `/chrysalis:fix-tests` | Run tests and fix failures |
+| `/chrysalis:git-session-cleanup` | Clean up temporary files from a session |
 
 ---
 
@@ -157,15 +157,15 @@ Add to your project's `.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "vd_workflow": {
+    "chrysalis": {
       "source": {
         "source": "github",
-        "repo": "jyaunches/vd_workflow"
+        "repo": "jyaunches/chrysalis"
       }
     }
   },
   "enabledPlugins": {
-    "vd_workflow@vd_workflow": true
+    "chrysalis@chrysalis": true
   }
 }
 ```
@@ -173,13 +173,13 @@ Add to your project's `.claude/settings.json`:
 Or via CLI:
 
 ```bash
-/plugin marketplace add jyaunches/vd_workflow
+/plugin marketplace add jyaunches/chrysalis
 ```
 
 ### Local Development
 
 ```bash
-git clone git@github.com:jyaunches/vd_workflow.git ~/Development/vd_workflow
+git clone git@github.com:jyaunches/chrysalis.git ~/Development/chrysalis
 ```
 
 Then in your project's `.claude/settings.json`:
@@ -187,15 +187,15 @@ Then in your project's `.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "vd_workflow": {
+    "chrysalis": {
       "source": {
         "source": "directory",
-        "path": "~/Development/vd_workflow"
+        "path": "~/Development/chrysalis"
       }
     }
   },
   "enabledPlugins": {
-    "vd_workflow@vd_workflow": true
+    "chrysalis@chrysalis": true
   }
 }
 ```
@@ -216,7 +216,7 @@ rm -rf ~/.claude/plugins/cache/
 ### Command Hierarchy
 
 ```
-/vd_workflow:
+/chrysalis:
 ├── spec                    # Create specification
 │   └── :design-validation  # Design validation strategy
 │

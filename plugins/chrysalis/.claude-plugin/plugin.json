@@ -1,5 +1,5 @@
 {
-  "name": "vd_workflow",
+  "name": "chrysalis",
   "version": "1.5.0",
   "description": "Verification-driven development workflow with TDD - generic commands and agents for any project",
   "author": {

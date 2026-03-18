@@ -1,6 +1,6 @@
 # Code Patterns Checklist
 
-This checklist codifies development patterns for projects using vd_workflow. Use this during code reviews, specification reviews, and implementation to ensure consistency.
+This checklist codifies development patterns for projects using chrysalis. Use this during code reviews, specification reviews, and implementation to ensure consistency.
 
 ## Architectural Patterns
 
@@ -69,4 +69,4 @@ If a proposed change violates these patterns:
 
 ---
 
-*Part of the vd_workflow plugin.*
+*Part of the chrysalis plugin.*

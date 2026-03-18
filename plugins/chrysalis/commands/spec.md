@@ -7,7 +7,7 @@ argument-hint: <feature_name> "<description>"
 
 Create a new specification file for the project.
 
-**Usage**: `/vd_workflow:spec <feature_name> "<brief_description>"`
+**Usage**: `/chrysalis:spec <feature_name> "<brief_description>"`
 
 ## Create New Specification: $ARGUMENTS
 

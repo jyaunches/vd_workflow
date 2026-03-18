@@ -54,24 +54,24 @@ First, verify all prerequisites are met:
 
 ```bash
 # Check specs directory exists
-[ -d "specs" ] && echo "specs/: FOUND" || echo "specs/: NOT FOUND - will be created by /vd_workflow:spec"
+[ -d "specs" ] && echo "specs/: FOUND" || echo "specs/: NOT FOUND - will be created by /chrysalis:spec"
 ```
 
-**Note**: The `review-executor` and `feature-writer` agents are provided by the vd_workflow plugin. No local agent files are required.
+**Note**: The `review-executor` and `feature-writer` agents are provided by the chrysalis plugin. No local agent files are required.
 
 ### Step 1b: Locate PATTERNS.md
 
 The workflow uses `PATTERNS.md` to determine which recommendations can be auto-applied. Locate it using this fallback order:
 
 1. **Repo-local**: `shared_docs/PATTERNS.md` (project customization)
-2. **Plugin default**: `~/Development/vd_workflow/plugins/vd_workflow/shared_docs/PATTERNS.md`
+2. **Plugin default**: `~/Development/chrysalis/plugins/chrysalis/shared_docs/PATTERNS.md`
 
 ```bash
 # Check for PATTERNS.md
 if [ -f "shared_docs/PATTERNS.md" ]; then
   PATTERNS_PATH="shared_docs/PATTERNS.md"
-elif [ -f "$HOME/Development/vd_workflow/plugins/vd_workflow/shared_docs/PATTERNS.md" ]; then
-  PATTERNS_PATH="$HOME/Development/vd_workflow/plugins/vd_workflow/shared_docs/PATTERNS.md"
+elif [ -f "$HOME/Development/chrysalis/plugins/chrysalis/shared_docs/PATTERNS.md" ]; then
+  PATTERNS_PATH="$HOME/Development/chrysalis/plugins/chrysalis/shared_docs/PATTERNS.md"
 else
   echo "WARNING: PATTERNS.md not found - auto-apply will use conservative defaults"
   PATTERNS_PATH=""
@@ -212,7 +212,7 @@ Validation plan: $SPEC_DIR/validation.md
 Loop through each scenario in the validation plan:
 1. Parse BDD scenarios from validation.md
 2. Execute each scenario using specified tools
-3. On failure: invoke /vd_workflow:bug --auto (up to 3 attempts)
+3. On failure: invoke /chrysalis:bug --auto (up to 3 attempts)
 4. On pass: add [VALIDATED: sha] marker to scenario
 5. Update summary table after each scenario
 6. Continue until all scenarios pass or max attempts reached

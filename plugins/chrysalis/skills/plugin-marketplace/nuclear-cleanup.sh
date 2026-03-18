@@ -5,13 +5,13 @@
 #
 # Usage: ./nuclear-cleanup.sh <plugin_name> <marketplace_name> [github_repo]
 #
-# Example: ./nuclear-cleanup.sh vd_workflow vd_workflow jyaunches/vd_workflow
+# Example: ./nuclear-cleanup.sh chrysalis chrysalis jyaunches/chrysalis
 #
 
 set -e
 
-PLUGIN_NAME="${1:-vd_workflow}"
-MARKETPLACE_NAME="${2:-vd_workflow}"
+PLUGIN_NAME="${1:-chrysalis}"
+MARKETPLACE_NAME="${2:-chrysalis}"
 GITHUB_REPO="${3:-}"
 
 CLAUDE_DIR="$HOME/.claude"
